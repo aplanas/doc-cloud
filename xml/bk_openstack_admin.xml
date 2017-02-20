@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <book xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
-  <!--taroth 2017-01-12: based on https://github.com/openstack/openstack-manuals/commit/7698298a3d12eccc31bb801f6c4f307d3c99a821-->
   <title>OpenStack Administrator Guide</title>
   <info>
     <abstract>
@@ -12,8 +11,8 @@ manage and troubleshoot an OpenStack cloud.</para>
     <productname>SUSE OpenStack Cloud</productname>
     <productnumber>7</productnumber>
     <legalnotice role="cc-by">
- <para>Except where otherwise noted, this document is licensed under
-  <emphasis role="bold">Creative Commons Attribution 3.0 License </emphasis>:
+ <para>Except where otherwise noted, this document is licensed under 
+  <emphasis role="bold">Creative Commons Attribution 3.0 License </emphasis>: 
   <link xlink:href="http://creativecommons.org/licenses/by/3.0/legalcode"/>
  </para>
 </legalnotice>
@@ -303,14 +302,14 @@ hardware details.</para>
       <title>Conceptual architecture</title>
       <para>The following diagram shows the relationships among the OpenStack
 services:</para>
-      <informalfigure><mediaobject>
+      <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="openstack_kilo_conceptual_arch.png" width="90%"/>
+          <imagedata fileref="openstack_kilo_conceptual_arch.png" width=""/>
         </imageobject>
         <imageobject role="html">
-          <imagedata fileref="openstack_kilo_conceptual_arch.png" width="99%"/>
+          <imagedata fileref="openstack_kilo_conceptual_arch.png" width=""/>
         </imageobject>
-      </mediaobject></informalfigure>
+      </mediaobject>
     </sect1>
     <sect1>
       <title>Logical architecture</title>
@@ -340,14 +339,14 @@ are available. Ultimately, all these access methods issue REST API calls
 to the various OpenStack services.</para>
       <para>The following diagram shows the most common, but not the only possible,
 architecture for an OpenStack cloud:</para>
-      <informalfigure><mediaobject>
+      <mediaobject>
         <imageobject role="fo">
-          <imagedata fileref="openstack-arch-kilo-logical-v1.png" width="99%"/>
+          <imagedata fileref="openstack-arch-kilo-logical-v1.png" width="100%"/>
         </imageobject>
         <imageobject role="html">
-          <imagedata fileref="openstack-arch-kilo-logical-v1.png" width="99%"/>
+          <imagedata fileref="openstack-arch-kilo-logical-v1.png" width="100%"/>
         </imageobject>
-      </mediaobject></informalfigure>
+      </mediaobject>
     </sect1>
     <sect1>
       <title>OpenStack services</title>
@@ -436,7 +435,7 @@ certificates. Used to generate certificates for
             <term><literal>nova-consoleauth</literal> daemon</term>
             <listitem>
               <para>Authorizes tokens for users that console proxies provide. See
-<literal>nova-novncproxy</literal>. <!--and <literal>nova-xvpvncproxy</literal>.--> This service must be running
+<literal>nova-novncproxy</literal> and <literal>nova-xvpvncproxy</literal>. This service must be running
 for console proxies to work. You can run proxies of either type
 against a single nova-consoleauth service in a cluster
 configuration. For information, see <link xlink:href="http://docs.openstack.org/admin-guide/compute-remote-console-access.html#about-nova-consoleauth">About
@@ -457,13 +456,13 @@ connection. Supports browser-based novnc clients.</para>
 connection. Supports browser-based HTML5 client.</para>
             </listitem>
           </varlistentry>
-          <!--<varlistentry>
+          <varlistentry>
             <term><literal>nova-xvpvncproxy</literal> daemon</term>
             <listitem>
               <para>Provides a proxy for accessing running instances through a VNC
 connection. Supports an OpenStack-specific Java client.</para>
             </listitem>
-          </varlistentry>-->
+          </varlistentry>
           <varlistentry>
             <term>The queue</term>
             <listitem>
@@ -880,14 +879,14 @@ networks and connectivity for its instances.</para>
         <para>The OpenStack Dashboard is a modular <link xlink:href="https://www.djangoproject.com/">Django web
 application</link> that provides a
 graphical interface to OpenStack services.</para>
-        <informalfigure><mediaobject>
+        <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="horizon-screenshot.png" width="99%"/>
+            <imagedata fileref="horizon-screenshot.png" width="100%"/>
           </imageobject>
           <imageobject role="html">
-            <imagedata fileref="horizon-screenshot.png" width="99%"/>
+            <imagedata fileref="horizon-screenshot.png" width="100%"/>
           </imageobject>
-        </mediaobject></informalfigure>
+        </mediaobject>
         <para>The dashboard is usually deployed through
 <link xlink:href="http://code.google.com/p/modwsgi/">mod_wsgi</link> in Apache. You can
 modify the dashboard code to make it suitable for different sites.</para>
@@ -3795,32 +3794,7 @@ interact with the OpenStack Compute cloud controller using the OpenStack
 APIs. For more information about installing and configuring the
 Dashboard, see the <link xlink:href="http://docs.openstack.org/project-install-guide/newton/">Installation Tutorials and Guides</link>
 for your operating system.</para>
-
-    <itemizedlist>
-      <listitem>
-        <para>To deploy the dashboard, see the <link xlink:href="http://docs.openstack.org/developer/horizon/topics/deployment.html">OpenStack dashboard documentation</link>.</para>
-      </listitem>
-      <listitem>
-        <para>To launch instances with the dashboard as an end user, see the
-          <link xlink:href="http://docs.openstack.org/user-guide/dashboard-launch-instances.html">Launch and manage instances</link>.
-          in the OpenStack End User Guide.</para>
-      </listitem>
-      <listitem>
-        <para>To create and manage ports, see the <link xlink:href="http://docs.openstack.org/user-guide/dashboard-create-networks.html#create-a-port">Create and manage networks</link>
-          section of the OpenStack End User Guide.</para>
-      </listitem>
-    </itemizedlist>
-
     <sect1>
-      <title>Customize and configure the Dashboard</title>
-      <para>
-        For information on this topic, see the SUSE OpenStack Supplement Guide,
-        available from <link xlink:href="https://www.suse.com/documentation/cloud/"/>.
-      </para>
-      </sect1>
-
-<!-- <remark>taroth 2017-02-01: commenting section as it is partly Ubuntu-specific</remark>-->
-<!--    <sect1>
       <title>Customize and configure the Dashboard</title>
       <para>Once you have the Dashboard installed, you can customize the way
 it looks and feels to suit the needs of your environment, your
@@ -3834,7 +3808,7 @@ HTTP channel, but you can enable SSL support for the Dashboard.</para>
         <para>The OpenStack Dashboard on Ubuntu installs the
 <literal>openstack-dashboard-ubuntu-theme</literal> package by default. If you do not
 want to use this theme, remove it and its dependencies:</para>
-        <screen language="console"># apt-get remove -/-auto-remove openstack-dashboard-ubuntu-theme</screen>
+        <screen language="console"># apt-get remove --auto-remove openstack-dashboard-ubuntu-theme</screen>
         <note>
           <para>This guide focuses on the <literal>local_settings.py</literal> file.</para>
         </note>
@@ -4257,7 +4231,7 @@ novncproxy_base_url = https://controller:6080/vnc_auto.html</screen>
           </procedure>
         </sect3>
       </sect2>
-      </sect1>-->
+    </sect1>
     <sect1>
       <title>Set up session storage for the Dashboard</title>
       <para>The Dashboard uses <link xlink:href="https://docs.djangoproject.com/en/dev/topics/http/sessions/">Django sessions
@@ -4476,18 +4450,17 @@ can administer for cloud users appear on this page.</para>
           <step>
             <para>Click <guimenu>Create Image</guimenu>, which opens the
 <guimenu>Create An Image</guimenu> window.</para>
-            <!--taroth 2017-02-01: commenting for now-->
-            <!--<figure>
+            <figure>
               <title>Figure Dashboard — Create Image</title>
               <mediaobject>
                 <imageobject role="fo">
-                  <imagedata fileref="create_image.png" width="99%"/>
+                  <imagedata fileref="create_image.png" width=""/>
                 </imageobject>
                 <imageobject role="html">
-                  <imagedata fileref="create_image.png" width="99%"/>
+                  <imagedata fileref="create_image.png" width=""/>
                 </imageobject>
               </mediaobject>
-            </figure>-->
+            </figure>
           </step>
           <step>
             <para>In the <guimenu>Create An Image</guimenu> window, enter or select the
@@ -4825,18 +4798,17 @@ actions on the instance. For example, pause, un-pause, suspend, resume,
 soft or hard reboot, or terminate (actions in red are dangerous).</para>
           </step>
         </procedure>
-        <!--taroth 2017-02-01: commenting for now-->
-        <!--<figure>
+        <figure>
           <title>Figure Dashboard — Instance Actions</title>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="change_instance_state.jpg" width="99%"/>
+              <imagedata fileref="change_instance_state.png" width="100%"/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="change_instance_state.jpg" width="99%"/>
+              <imagedata fileref="change_instance_state.png" width="100%"/>
             </imageobject>
           </mediaobject>
-        </figure>-->
+        </figure>
       </sect2>
       <sect2>
         <title>Track usage</title>
@@ -4987,10 +4959,10 @@ parameters for the flavor in the <guimenu>Flavor Information</guimenu> tab.</par
               <title>Dashboard — Create Flavor</title>
               <mediaobject>
                 <imageobject role="fo">
-                  <imagedata fileref="create_flavor.png" width="99%"/>
+                  <imagedata fileref="create_flavor.png" width=""/>
                 </imageobject>
                 <imageobject role="html">
-                  <imagedata fileref="create_flavor.png" width="99%"/>
+                  <imagedata fileref="create_flavor.png" width=""/>
                 </imageobject>
               </mediaobject>
             </figure>
@@ -5419,10 +5391,10 @@ back end (cinder).</para>
           <title>Encryption Options</title>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="create_volume_type_encryption.png" width="99%"/>
+              <imagedata fileref="create_volume_type_encryption.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="create_volume_type_encryption.png" width="99%"/>
+              <imagedata fileref="create_volume_type_encryption.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -6253,6 +6225,20 @@ the <link xlink:href="http://docs.openstack.org/user-guide/dashboard-stacks.html
         </listitem>
       </itemizedlist>
     </sect1>
+    <itemizedlist>
+      <listitem>
+        <para>To deploy the dashboard, see the <link xlink:href="http://docs.openstack.org/developer/horizon/topics/deployment.html">OpenStack dashboard documentation</link>.</para>
+      </listitem>
+      <listitem>
+        <para>To launch instances with the dashboard as an end user, see the
+<link xlink:href="http://docs.openstack.org/user-guide/dashboard-launch-instances.html">Launch and manage instances</link>.
+in the OpenStack End User Guide.</para>
+      </listitem>
+      <listitem>
+        <para>To create and manage ports, see the <link xlink:href="http://docs.openstack.org/user-guide/dashboard-create-networks.html#create-a-port">Create and manage networks</link>
+section of the OpenStack End User Guide.</para>
+      </listitem>
+    </itemizedlist>
   </chapter>
   <chapter>
     <title>Compute</title>
@@ -6324,6 +6310,16 @@ availability zones. Compute supports the following hypervisors:</para>
           <listitem>
             <para>
               <link xlink:href="https://wiki.openstack.org/wiki/Ironic">Baremetal</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="https://www.docker.io">Docker</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link xlink:href="http://www.microsoft.com/en-us/server-cloud/hyper-v-server/default.aspx">Hyper-V</link>
             </para>
           </listitem>
           <listitem>
@@ -6747,10 +6743,10 @@ available vCPU, memory, and local disk resources. Additionally, the
         <title/>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="instance-life-1.png" width="99%"/>
+            <imagedata fileref="instance-life-1.png" width=""/>
           </imageobject>
           <imageobject role="html">
-            <imagedata fileref="instance-life-1.png" width="99%"/>
+            <imagedata fileref="instance-life-1.png" width=""/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -6768,10 +6764,10 @@ disk on this instance, <literal>vdc</literal>.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="instance-life-2.png" width="99%"/>
+              <imagedata fileref="instance-life-2.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="instance-life-2.png" width="99%"/>
+              <imagedata fileref="instance-life-2.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -6805,10 +6801,10 @@ unchanged throughout this process.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="instance-life-3.png" width="99%"/>
+              <imagedata fileref="instance-life-3.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="instance-life-3.png" width="99%"/>
+              <imagedata fileref="instance-life-3.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -7896,10 +7892,10 @@ network mode has its own set of changes regarding multinic usage:</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-manager.jpg" width="99%"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-manager.jpg" width="600"/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-manager.jpg" width="99%"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-manager.jpg" width="600"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -7907,10 +7903,10 @@ network mode has its own set of changes regarding multinic usage:</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-DHCP-manager.jpg" width="99%"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-DHCP-manager.jpg" width="600"/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-DHCP-manager.jpg" width="99%"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-DHCP-manager.jpg" width="600"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -7918,10 +7914,10 @@ network mode has its own set of changes regarding multinic usage:</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-VLAN-manager.jpg" width="99%"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-VLAN-manager.jpg" width="600"/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-VLAN-manager.jpg" width="99%"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-VLAN-manager.jpg" width="600"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -7966,12 +7962,14 @@ the <command>openstack server create</command> command:</para>
       <sect2>
         <title>Troubleshooting Networking</title>
         <sect3>
-         <title>Cannot reach floating IPs</title>
-         <para/>
-          <bridgehead renderas="sect4">Problem</bridgehead>
-
+          <title>Cannot reach floating IPs</title>
+        </sect3>
+        <sect3>
+          <title>Problem</title>
           <para>You cannot reach your instances through the floating IP address.</para>
-          <bridgehead renderas="sect4">Solution</bridgehead>
+        </sect3>
+        <sect3>
+          <title>Solution</title>
           <itemizedlist>
             <listitem>
               <para>Check that the default security group allows ICMP (ping) and SSH
@@ -8024,21 +8022,23 @@ example, if the inbound interface is <literal>eth2</literal>, run:</para>
         </sect3>
         <sect3>
           <title>Temporarily disable firewall</title>
-          <para/>
-          <bridgehead renderas="sect4">Problem</bridgehead>
+        </sect3>
+        <sect3>
+          <title>Problem</title>
           <para>Networking issues prevent administrators accessing or reaching VM's
 through various pathways.</para>
-
-          <bridgehead renderas="sect4">Solution</bridgehead>
+        </sect3>
+        <sect3>
+          <title>Solution</title>
           <para>You can disable the firewall by setting this option
 in <literal>/etc/nova/nova.conf</literal>:</para>
           <screen language="ini">firewall_driver=nova.virt.firewall.NoopFirewallDriver</screen>
         </sect3>
         <sect3>
-          <title>Packet loss from instances to nova-network server (VLANManager
-          mode)</title>
-          <para/>
-          <bridgehead renderas="sect4">Problem</bridgehead>
+          <title>Packet loss from instances to nova-network server (VLANManager mode)</title>
+        </sect3>
+        <sect3>
+          <title>Problem</title>
           <para>If you can access your instances with <literal>SSH</literal> but the network to your instance
 is slow, or if you find that running certain operations are slower than
 they should be (for example, <literal>sudo</literal>), packet loss could be occurring
@@ -8048,7 +8048,9 @@ related to bridges. Certain settings can cause packets to be dropped
 between the VLAN interface (for example, <literal>vlan100</literal>) and the associated
 bridge interface (for example, <literal>br100</literal>) on the host running
 <literal>nova-network</literal>.</para>
-          <bridgehead renderas="sect4">Solution</bridgehead>
+        </sect3>
+        <sect3>
+          <title>Solution</title>
           <para>One way to check whether this is the problem is to open three terminals
 and run the following commands:</para>
           <procedure>
@@ -8090,12 +8092,15 @@ net.bridge.bridge-nf-call-ip6tables=0</screen>
           </procedure>
         </sect3>
         <sect3>
-         <title>KVM: Network connectivity works initially, then fails</title>
-         <para/>
-          <bridgehead renderas="sect4">Problem</bridgehead>
+          <title>KVM: Network connectivity works initially, then fails</title>
+        </sect3>
+        <sect3>
+          <title>Problem</title>
           <para>With KVM hypervisors, instances running Ubuntu 12.04 sometimes lose
 network connectivity after functioning properly for a period of time.</para>
-          <bridgehead renderas="sect4">Solution</bridgehead>
+        </sect3>
+        <sect3>
+          <title>Solution</title>
           <para>Try loading the <literal>vhost_net</literal> kernel module as a workaround for this
 issue (see <link xlink:href="https://bugs.launchpad.net/ubuntu/+source/libvirt/+bug/997978/">bug
 #997978</link>)
@@ -8111,115 +8116,6 @@ the kernel module:</para>
     </sect1>
     <sect1>
       <title>System administration</title>
-      <para>To effectively administer compute, you must understand how the different
-        installed nodes interact with each other. Compute can be installed in
-        many different ways using multiple servers, but generally multiple
-        compute nodes control the virtual servers and a cloud controller node
-        contains the remaining Compute services.</para>
-      <para>The Compute cloud works using a series of daemon processes named <literal>nova-*</literal>
-        that exist persistently on the host machine. These binaries can all run
-        on the same machine or be spread out on multiple boxes in a large
-        deployment. The responsibilities of services and drivers are:</para>
-      <para>
-        <emphasis role="bold">Services</emphasis>
-      </para>
-      <variablelist>
-        <varlistentry>
-          <term>
-            <literal>nova-api</literal>
-          </term>
-          <listitem>
-            <para>receives XML requests and sends them to the rest of the
-              system. A WSGI app routes and authenticates requests. Supports the
-              EC2 and OpenStack APIs. A <literal>nova.conf</literal> configuration file is created
-              when Compute is installed.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <literal>nova-cert</literal>
-          </term>
-          <listitem>
-            <para>manages certificates.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <literal>nova-compute</literal>
-          </term>
-          <listitem>
-            <para>manages virtual machines. Loads a Service object, and
-              exposes the public methods on ComputeManager through a Remote
-              Procedure Call (RPC).</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <literal>nova-conductor</literal>
-          </term>
-          <listitem>
-            <para>provides database-access support for compute nodes
-              (thereby reducing security risks).</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <literal>nova-consoleauth</literal>
-          </term>
-          <listitem>
-            <para>manages console authentication.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <literal>nova-objectstore</literal>
-          </term>
-          <listitem>
-            <para>a simple file-based storage system for images that
-              replicates most of the S3 API. It can be replaced with OpenStack
-              Image service and either a simple image manager or OpenStack Object
-              Storage as the virtual machine image storage facility. It must exist
-              on the same node as <literal>nova-compute</literal>.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <literal>nova-network</literal>
-          </term>
-          <listitem>
-            <para>manages floating and fixed IPs, DHCP, bridging and
-              VLANs. Loads a Service object which exposes the public methods on one
-              of the subclasses of NetworkManager. Different networking strategies
-              are available by changing the <literal>network_manager</literal> configuration
-              option to <literal>FlatManager</literal>, <literal>FlatDHCPManager</literal>, or <literal>VLANManager</literal>
-              (defaults to <literal>VLANManager</literal> if nothing is specified).</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <literal>nova-scheduler</literal>
-          </term>
-          <listitem>
-            <para>dispatches requests for new virtual machines to the
-              correct node.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>
-            <literal>nova-novncproxy</literal>
-          </term>
-          <listitem>
-            <para>provides a VNC proxy for browsers, allowing VNC
-              consoles to access virtual machines.</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-      <note>
-        <para>Some services have drivers that change how the service implements
-          its core functionality. For example, the <literal>nova-compute</literal> service
-          supports drivers that let you choose which hypervisor type it can
-          use. <literal>nova-network</literal> and <literal>nova-scheduler</literal> also have drivers.</para>
-      </note>
       <sect2>
         <title>Manage Compute users</title>
         <para>Access to the Euca2ools (ec2) API is controlled by an access key and a
@@ -9057,6 +8953,26 @@ to a guest.</para>
                 </itemizedlist>
               </listitem>
             </varlistentry>
+            <varlistentry>
+              <term>Secure Boot</term>
+              <listitem>
+                <para>When your Compute services use the Hyper-V hypervisor, you can enable
+secure boot for Windows and Linux instances.</para>
+                <screen>$ openstack flavor set FLAVOR-NAME \
+     --property os:secure_boot=SECURE_BOOT_OPTION</screen>
+                <para>Valid <literal>SECURE_BOOT_OPTION</literal> values are:</para>
+                <itemizedlist>
+                  <listitem>
+                    <para><literal>required</literal>: Enable Secure Boot for instances running with this
+flavor.</para>
+                  </listitem>
+                  <listitem>
+                    <para><literal>disabled</literal> or <literal>optional</literal>: (default) Disable Secure Boot for
+instances running with this flavor.</para>
+                  </listitem>
+                </itemizedlist>
+              </listitem>
+            </varlistentry>
           </variablelist>
         </sect3>
       </sect2>
@@ -9142,54 +9058,7 @@ the admin password on boot by installing an agent such as
       </sect2>
       <sect2>
         <title>Manage the cloud</title>
-        <para>System administrators can use the <command>openstack</command> and
-          <command>euca2ools</command> commands to manage their clouds.</para>
-        <para>The <literal>openstack</literal> client and <literal>euca2ools</literal> can be used by all users, though
-          specific commands might be restricted by the Identity service.</para>
-        <para>
-          <emphasis role="bold">Managing the cloud with the openstack client</emphasis>
-        </para>
-        <procedure>
-          <step>
-            <para>The <literal>python-openstackclient</literal> package provides an <literal>openstack</literal> shell that
-              enables Compute API interactions from the command line. Install the client,
-              and provide your user name and password (which can be set as environment
-              variables for convenience), for the ability to administer the cloud from
-              the command line.</para>
-            <para>To install python-openstackclient, follow the instructions in the
-              <link xlink:href="http://docs.openstack.org/user-guide/common/cli-install-openstack-command-line-clients.html">OpenStack User Guide</link>.</para>
-          </step>
-          <step>
-            <para>Confirm the installation was successful:</para>
-            <screen language="console">$ openstack help
-              usage: openstack [--version] [-v | -q] [--log-file LOG_FILE] [-h] [--debug]
-              [--os-cloud &lt;cloud-config-name&gt;]
-              [--os-region-name &lt;auth-region-name&gt;]
-              [--os-cacert &lt;ca-bundle-file&gt;] [--verify | --insecure]
-              [--os-default-domain &lt;auth-domain&gt;]
-              ...</screen>
-            <para>Running <command>openstack help</command> returns a list of <literal>openstack</literal> commands
-              and parameters. To get help for a subcommand, run:</para>
-            <screen language="console">$ openstack help SUBCOMMAND</screen>
-            <para>For a complete list of <literal>openstack</literal> commands and parameters, see the
-              <link xlink:href="http://docs.openstack.org/cli-reference/openstack.html">OpenStack Command-Line Reference</link>.</para>
-          </step>
-          <step>
-            <para>Set the required parameters as environment variables to make running
-              commands easier. For example, you can add <literal>--os-username</literal> as an
-              <literal>openstack</literal> option, or set it as an environment variable. To set the user
-              name, password, and project as environment variables, use:</para>
-            <screen language="console">$ export OS_USERNAME=joecool
-              $ export OS_PASSWORD=coolword
-              $ export OS_TENANT_NAME=coolu</screen>
-          </step>
-          <step>
-            <para>The Identity service gives you an authentication endpoint,
-              which Compute recognizes as <literal>OS_AUTH_URL</literal>:</para>
-            <screen language="console">$ export OS_AUTH_URL=http://hostname:5000/v2.0</screen>
-          </step>
-        </procedure>
-          <sect3>
+        <sect3>
           <title>Managing the cloud with euca2ools</title>
           <para>The <literal>euca2ools</literal> command-line tool provides a command line interface to
 EC2 API calls. For more information, see the <link xlink:href="http://docs.hpcloud.com/eucalyptus/">Official Eucalyptus Documentation</link>.</para>
@@ -9313,6 +9182,53 @@ Usage from 2013-06-25 to 2013-07-24:
             </itemizedlist>
           </sect4>
         </sect3>
+        <para>System administrators can use the <command>openstack</command> and
+<command>euca2ools</command> commands to manage their clouds.</para>
+        <para>The <literal>openstack</literal> client and <literal>euca2ools</literal> can be used by all users, though
+specific commands might be restricted by the Identity service.</para>
+        <para>
+          <emphasis role="bold">Managing the cloud with the openstack client</emphasis>
+        </para>
+        <procedure>
+          <step>
+            <para>The <literal>python-openstackclient</literal> package provides an <literal>openstack</literal> shell that
+enables Compute API interactions from the command line. Install the client,
+and provide your user name and password (which can be set as environment
+variables for convenience), for the ability to administer the cloud from
+the command line.</para>
+            <para>To install python-openstackclient, follow the instructions in the
+<link xlink:href="http://docs.openstack.org/user-guide/common/cli-install-openstack-command-line-clients.html">OpenStack User Guide</link>.</para>
+          </step>
+          <step>
+            <para>Confirm the installation was successful:</para>
+            <screen language="console">$ openstack help
+usage: openstack [--version] [-v | -q] [--log-file LOG_FILE] [-h] [--debug]
+           [--os-cloud &lt;cloud-config-name&gt;]
+           [--os-region-name &lt;auth-region-name&gt;]
+           [--os-cacert &lt;ca-bundle-file&gt;] [--verify | --insecure]
+           [--os-default-domain &lt;auth-domain&gt;]
+           ...</screen>
+            <para>Running <command>openstack help</command> returns a list of <literal>openstack</literal> commands
+and parameters. To get help for a subcommand, run:</para>
+            <screen language="console">$ openstack help SUBCOMMAND</screen>
+            <para>For a complete list of <literal>openstack</literal> commands and parameters, see the
+<link xlink:href="http://docs.openstack.org/cli-reference/openstack.html">OpenStack Command-Line Reference</link>.</para>
+          </step>
+          <step>
+            <para>Set the required parameters as environment variables to make running
+commands easier. For example, you can add <literal>--os-username</literal> as an
+<literal>openstack</literal> option, or set it as an environment variable. To set the user
+name, password, and project as environment variables, use:</para>
+            <screen language="console">$ export OS_USERNAME=joecool
+$ export OS_PASSWORD=coolword
+$ export OS_TENANT_NAME=coolu</screen>
+          </step>
+          <step>
+            <para>The Identity service gives you an authentication endpoint,
+which Compute recognizes as <literal>OS_AUTH_URL</literal>:</para>
+            <screen language="console">$ export OS_AUTH_URL=http://hostname:5000/v2.0</screen>
+          </step>
+        </procedure>
       </sect2>
       <sect2>
         <title>Logging</title>
@@ -10870,10 +10786,11 @@ because that IP address does not exist on the destination host.</para>
                       <para>vncserver_proxyclient_address = 127.0.0.1</para>
                     </entry>
                     <entry>
-                      <para>(StrOpt) The address to which proxy clients should connect</para>
+                      <para>(StrOpt) The address to which proxy clients (like nova-xvpvncproxy)
+should connect</para>
                     </entry>
                   </row>
-                  <!--<row>
+                  <row>
                     <entry>
                       <para>xvpvncproxy_base_url = <link xlink:href="http://127.0.0.1:6081/console">http://127.0.0.1:6081/console</link></para>
                     </entry>
@@ -10881,7 +10798,7 @@ because that IP address does not exist on the destination host.</para>
                       <para>(StrOpt) Location of nova xvp VNC console proxy, in the form
 "<link xlink:href="http://127.0.0.1:6081/console">http://127.0.0.1:6081/console</link>"</para>
                     </entry>
-                  </row>-->
+                  </row>
                 </tbody>
               </tgroup>
             </table>
@@ -10920,12 +10837,12 @@ clients. For simple deployments, this service typically runs on the
 same machine as <literal>nova-api</literal> because it operates as a proxy between the
 public network and the private compute host network.</para>
               </listitem>
-              <!--<listitem>
+              <listitem>
                 <para>One or more <literal>nova-xvpvncproxy</literal> services. Supports the special Java
 client discussed here. For simple deployments, this service typically
 runs on the same machine as <literal>nova-api</literal> because it acts as a proxy
 between the public network and the private compute host network.</para>
-              </listitem>-->
+              </listitem>
               <listitem>
                 <para>One or more compute hosts. These compute hosts must have correctly
 configured options, as follows.</para>
@@ -10970,7 +10887,7 @@ when connecting to instance <literal>vncservers</literal>.</para>
           <sect4>
             <title>Frequently asked questions about VNC access to virtual machines</title>
             <itemizedlist>
-              <!--<listitem>
+              <listitem>
                 <para>
                   <emphasis role="bold">Q: What is the difference between ``nova-xvpvncproxy`` and
 ``nova-novncproxy``?</emphasis>
@@ -10978,7 +10895,7 @@ when connecting to instance <literal>vncservers</literal>.</para>
                 <para>A: <literal>nova-xvpvncproxy</literal>, which ships with OpenStack Compute, is a
 proxy that supports a simple Java client. nova-novncproxy uses noVNC
 to provide VNC support through a web browser.</para>
-              </listitem>-->
+              </listitem>
               <listitem>
                 <para>
                   <emphasis role="bold">Q: I want VNC support in the OpenStack dashboard. What services do
@@ -11010,17 +10927,18 @@ COMPUTESERVER (management_ip=192.168.1.2)</screen>
                 <screen language="console"># These flags help construct a connection data structure
 vncserver_proxyclient_address=192.168.1.2
 novncproxy_base_url=http://172.24.1.1:6080/vnc_auto.html
+xvpvncproxy_base_url=http://172.24.1.1:6081/console
 
 # This is the address where the underlying vncserver (not the proxy)
 # will listen for connections.
 vncserver_listen=192.168.1.2</screen>
-                <!--<note>
+                <note>
                   <para><literal>novncproxy_base_url</literal> and <literal>xvpvncproxy_base_url</literal> use a public
 IP; this is the URL that is ultimately returned to clients, which
 generally do not have access to your private network. Your
 PROXYSERVER must be able to reach <literal>vncserver_proxyclient_address</literal>,
 because that is the address over which the VNC connection is proxied.</para>
-                </note>-->
+                </note>
               </listitem>
               <listitem>
                 <para>
@@ -11196,10 +11114,10 @@ project.</para>
             <title>Configuring Compute to use trusted compute pools</title>
             <mediaobject>
               <imageobject role="fo">
-                <imagedata fileref="OpenStackTrustedComputePool1.png" width="99%"/>
+                <imagedata fileref="OpenStackTrustedComputePool1.png" width=""/>
               </imageobject>
               <imageobject role="html">
-                <imagedata fileref="OpenStackTrustedComputePool1.png" width="99%"/>
+                <imagedata fileref="OpenStackTrustedComputePool1.png" width=""/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -11368,10 +11286,10 @@ specifying a trusted flavor when booting the instance:</para>
             <title/>
             <mediaobject>
               <imageobject role="fo">
-                <imagedata fileref="OpenStackTrustedComputePool2.png" width="99%"/>
+                <imagedata fileref="OpenStackTrustedComputePool2.png" width=""/>
               </imageobject>
               <imageobject role="html">
-                <imagedata fileref="OpenStackTrustedComputePool2.png" width="99%"/>
+                <imagedata fileref="OpenStackTrustedComputePool2.png" width=""/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -12309,6 +12227,115 @@ guide.</para>
           </sect4>
         </sect3>
       </sect2>
+      <para>To effectively administer compute, you must understand how the different
+installed nodes interact with each other. Compute can be installed in
+many different ways using multiple servers, but generally multiple
+compute nodes control the virtual servers and a cloud controller node
+contains the remaining Compute services.</para>
+      <para>The Compute cloud works using a series of daemon processes named <literal>nova-*</literal>
+that exist persistently on the host machine. These binaries can all run
+on the same machine or be spread out on multiple boxes in a large
+deployment. The responsibilities of services and drivers are:</para>
+      <para>
+        <emphasis role="bold">Services</emphasis>
+      </para>
+      <variablelist>
+        <varlistentry>
+          <term>
+            <literal>nova-api</literal>
+          </term>
+          <listitem>
+            <para>receives XML requests and sends them to the rest of the
+system. A WSGI app routes and authenticates requests. Supports the
+EC2 and OpenStack APIs. A <literal>nova.conf</literal> configuration file is created
+when Compute is installed.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <literal>nova-cert</literal>
+          </term>
+          <listitem>
+            <para>manages certificates.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <literal>nova-compute</literal>
+          </term>
+          <listitem>
+            <para>manages virtual machines. Loads a Service object, and
+exposes the public methods on ComputeManager through a Remote
+Procedure Call (RPC).</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <literal>nova-conductor</literal>
+          </term>
+          <listitem>
+            <para>provides database-access support for compute nodes
+(thereby reducing security risks).</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <literal>nova-consoleauth</literal>
+          </term>
+          <listitem>
+            <para>manages console authentication.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <literal>nova-objectstore</literal>
+          </term>
+          <listitem>
+            <para>a simple file-based storage system for images that
+replicates most of the S3 API. It can be replaced with OpenStack
+Image service and either a simple image manager or OpenStack Object
+Storage as the virtual machine image storage facility. It must exist
+on the same node as <literal>nova-compute</literal>.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <literal>nova-network</literal>
+          </term>
+          <listitem>
+            <para>manages floating and fixed IPs, DHCP, bridging and
+VLANs. Loads a Service object which exposes the public methods on one
+of the subclasses of NetworkManager. Different networking strategies
+are available by changing the <literal>network_manager</literal> configuration
+option to <literal>FlatManager</literal>, <literal>FlatDHCPManager</literal>, or <literal>VLANManager</literal>
+(defaults to <literal>VLANManager</literal> if nothing is specified).</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <literal>nova-scheduler</literal>
+          </term>
+          <listitem>
+            <para>dispatches requests for new virtual machines to the
+correct node.</para>
+          </listitem>
+        </varlistentry>
+        <varlistentry>
+          <term>
+            <literal>nova-novncproxy</literal>
+          </term>
+          <listitem>
+            <para>provides a VNC proxy for browsers, allowing VNC
+consoles to access virtual machines.</para>
+          </listitem>
+        </varlistentry>
+      </variablelist>
+      <note>
+        <para>Some services have drivers that change how the service implements
+its core functionality. For example, the <literal>nova-compute</literal> service
+supports drivers that let you choose which hypervisor type it can
+use. <literal>nova-network</literal> and <literal>nova-scheduler</literal> also have drivers.</para>
+      </note>
     </sect1>
     <sect1>
       <title>Troubleshoot Compute</title>
@@ -12834,10 +12861,10 @@ Supermicro.</para>
         <title/>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="objectstorage.png" width="99%"/>
+            <imagedata fileref="objectstorage.png" width=""/>
           </imageobject>
           <imageobject role="html">
-            <imagedata fileref="objectstorage.png" width="99%"/>
+            <imagedata fileref="objectstorage.png" width=""/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -12887,10 +12914,10 @@ the cluster.</para>
         <title/>
         <mediaobject>
           <imageobject role="fo">
-            <imagedata fileref="objectstorage-buildingblocks.png" width="99%"/>
+            <imagedata fileref="objectstorage-buildingblocks.png" width=""/>
           </imageobject>
           <imageobject role="html">
-            <imagedata fileref="objectstorage-buildingblocks.png" width="99%"/>
+            <imagedata fileref="objectstorage-buildingblocks.png" width=""/>
           </imageobject>
         </mediaobject>
       </figure>
@@ -12940,10 +12967,10 @@ sized drives are used in a cluster.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="objectstorage-ring.png" width="99%"/>
+              <imagedata fileref="objectstorage-ring.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="objectstorage-ring.png" width="99%"/>
+              <imagedata fileref="objectstorage-ring.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -12982,10 +13009,10 @@ outages of storage servers without losing all replicas of the data.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="objectstorage-zones.png" width="99%"/>
+              <imagedata fileref="objectstorage-zones.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="objectstorage-zones.png" width="99%"/>
+              <imagedata fileref="objectstorage-zones.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -13003,10 +13030,10 @@ objects in that container.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="objectstorage-accountscontainers.png" width="99%"/>
+              <imagedata fileref="objectstorage-accountscontainers.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="objectstorage-accountscontainers.png" width="99%"/>
+              <imagedata fileref="objectstorage-accountscontainers.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -13037,10 +13064,10 @@ contains.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="objectstorage-partitions.png" width="99%"/>
+              <imagedata fileref="objectstorage-partitions.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="objectstorage-partitions.png" width="99%"/>
+              <imagedata fileref="objectstorage-partitions.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -13071,10 +13098,10 @@ has a priority.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="objectstorage-replication.png" width="99%"/>
+              <imagedata fileref="objectstorage-replication.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="objectstorage-replication.png" width="99%"/>
+              <imagedata fileref="objectstorage-replication.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -13106,10 +13133,10 @@ there is a new object in it.</para>
             <title/>
             <mediaobject>
               <imageobject role="fo">
-                <imagedata fileref="objectstorage-usecase.png" width="99%"/>
+                <imagedata fileref="objectstorage-usecase.png" width=""/>
               </imageobject>
               <imageobject role="html">
-                <imagedata fileref="objectstorage-usecase.png" width="99%"/>
+                <imagedata fileref="objectstorage-usecase.png" width=""/>
               </imageobject>
             </mediaobject>
           </figure>
@@ -13350,10 +13377,10 @@ and <literal>project_name</literal>.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="objectstorage-arch.png" width="99%"/>
+              <imagedata fileref="objectstorage-arch.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="objectstorage-arch.png" width="99%"/>
+              <imagedata fileref="objectstorage-arch.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -13398,10 +13425,10 @@ workload and desired performance.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="objectstorage-nodes.png" width="99%"/>
+              <imagedata fileref="objectstorage-nodes.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="objectstorage-nodes.png" width="99%"/>
+              <imagedata fileref="objectstorage-nodes.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -21248,10 +21275,10 @@ relationship between the NSX controller and the network node.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="vmware_nsx_ex1.png" width="99%"/>
+              <imagedata fileref="vmware_nsx_ex1.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="vmware_nsx_ex1.png" width="99%"/>
+              <imagedata fileref="vmware_nsx_ex1.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -21259,10 +21286,10 @@ relationship between the NSX controller and the network node.</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="vmware_nsx_ex2.png" width="99%"/>
+              <imagedata fileref="vmware_nsx_ex2.png" width=""/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="vmware_nsx_ex2.png" width="99%"/>
+              <imagedata fileref="vmware_nsx_ex2.png" width=""/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -26158,7 +26185,7 @@ process. The API access needs a valid token and proper permission to
 retrieve data, as described in <xref linkend="telemetry-users-roles-projects"/>.</para>
         <para>Further information about the available API endpoints can be found in
 the <link xlink:href="http://developer.openstack.org/api-ref-telemetry-v2.html">Telemetry API Reference</link>.</para>
-        <sect3 xml:id="sec.query">
+        <sect3>
           <title>Query</title>
           <para>The API provides some additional functionalities, like querying the
 collected data set. For the samples and alarms API endpoints, both
@@ -26539,7 +26566,7 @@ queries. This command accepts the following parameters:</para>
           </varlistentry>
         </variablelist>
         <para>For more information about complex queries see
-<xref linkend="sec.query"/>.</para>
+<xref linkend="complex-query"/>.</para>
         <para>As the complex query functionality provides the possibility of using
 complex operators, it is possible to retrieve a subset of samples for a
 given VM instance. To request for the first six samples for the <literal>cpu</literal>
@@ -35792,8 +35819,9 @@ for the <literal>pxe_enabled</literal> ports only:</para>
       <title>Troubleshooting</title>
       <sect2>
         <title>No valid host found error</title>
-        <para/>
-        <bridgehead renderas="sect4">Problem</bridgehead>
+      </sect2>
+      <sect2>
+        <title>Problem</title>
         <para>Sometimes <literal>/var/log/nova/nova-conductor.log</literal> contains the following error:</para>
         <screen language="console">NoValidHost: No valid host was found. There are not enough hosts available.</screen>
         <para>The message <literal>No valid host was found</literal> means that the Compute service
@@ -35802,7 +35830,9 @@ instance.</para>
         <para>This means there will be some mismatch between resources that the Compute
 service expects to find and resources that Bare Metal service advertised to
 the Compute service.</para>
-        <bridgehead renderas="sect4">Solution</bridgehead>
+      </sect2>
+      <sect2>
+        <title>Solution</title>
         <para>If you get this message, check the following:</para>
         <procedure>
           <step>
@@ -39259,10 +39289,9 @@ node.</para>
 | 4f8113c1d838467cad0c2f337b3dfded | demo01 |
 +----------------------------------+--------+</screen>
       </note>
-      <para>Use <literal>openstack quota show <replaceable>PROJECT_NAME</replaceable></literal> to list all quotas for a
+      <para>Use <literal>openstack quota show <emphasis>PROJECT_NAME</emphasis></literal> to list all quotas for a
 project.</para>
-      <para>Use <literal>openstack quota set
-      <replaceable>PROJECT_NAME</replaceable> --<replaceable>parameters</replaceable></literal> to set quota
+      <para>Use <literal>openstack quota set <emphasis>PROJECT_NAME</emphasis><emphasis>--parameters</emphasis></literal> to set quota
 values.</para>
       <sect2>
         <title>Manage Compute service quotas</title>

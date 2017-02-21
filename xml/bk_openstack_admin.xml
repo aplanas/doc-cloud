@@ -333,7 +333,7 @@ deploying and configuring your OpenStack cloud, you can choose among
 several message broker and database solutions, such as RabbitMQ,
 MySQL, MariaDB, and SQLite.</para>
       <para>Users can access OpenStack via the web-based user interface implemented
-by , via <link xlink:href="http://docs.openstack.org/cli-reference/">command-line
+by <xref linkend="sec.dashboard"/>, via <link xlink:href="http://docs.openstack.org/cli-reference/">command-line
 clients</link> and by
 issuing API requests through tools like browser plug-ins or <command>curl</command>.
 For applications, <link xlink:href="http://developer.openstack.org/#sdk">several SDKs</link>
@@ -878,7 +878,7 @@ to store networking state for particular plug-ins.</para>
         <para>OpenStack Networking mainly interacts with OpenStack Compute to provide
 networks and connectivity for its instances.</para>
       </sect2>
-      <sect2>
+      <sect2 xml:id="sec.dashboard">
         <title>Dashboard overview</title>
         <para>The OpenStack Dashboard is a modular <link xlink:href="https://www.djangoproject.com/">Django web
 application</link> that provides a
@@ -1332,7 +1332,7 @@ or <link xlink:href="https://bugs.launchpad.net/openstack-manuals/+filebug">repo
 bug</link>.</para>
     </sect1>
   </chapter>
-  <chapter>
+  <chapter xml:id="cha.identity">
     <title>Identity management</title>
     <info/>
     <para>OpenStack Identity, code-named keystone, is the default Identity
@@ -1735,7 +1735,7 @@ includes Role B.</para>
         </itemizedlist>
       </sect2>
     </sect1>
-    <sect1>
+    <sect1 xml:id="cha.certificates.pki">
       <title>Certificates for PKI</title>
       <para>PKI stands for Public Key Infrastructure. Tokens are documents,
 cryptographically signed using the X509 standard. In order to work
@@ -2626,7 +2626,7 @@ information stored in the token and integrity is verified with a <literal>SHA256
 HMAC</literal> signature. Only the Identity service should have access to the keys used
 to encrypt and decrypt fernet tokens. Like UUID tokens, fernet tokens must be
 passed back to the Identity service in order to validate them. For more
-information on the fernet token type, see the .</para>
+information on the fernet token type, see the <xref linkend="cha.fernet.faq"/>.</para>
         </sect3>
         <sect3>
           <title>PKI and PKIZ tokens</title>
@@ -2637,7 +2637,7 @@ pairs and certificates in order to create and validate PKI tokens.</para>
           <para>The same concepts from PKI tokens apply to PKIZ tokens. The only difference
 between the two is PKIZ tokens are compressed to help mitigate the size issues
 of PKI. For more information on the certificate setup for PKI and PKIZ tokens,
-see the .</para>
+see the <xref linkend="cha.certificates.pki"/>.</para>
           <note>
             <para>PKI and PKIZ tokens are deprecated and not supported in Ocata.</para>
           </note>
@@ -2747,7 +2747,7 @@ enforce_token_bind = x509</screen>
         </listitem>
       </itemizedlist>
     </sect1>
-    <sect1>
+    <sect1 xml:id="cha.fernet.faq">
       <title>Fernet - Frequently Asked Questions</title>
       <para>The following questions have been asked periodically since the initial release
 of the fernet token format in Kilo.</para>
@@ -4450,7 +4450,7 @@ access.</para>
       <para>To create and manage images in specified projects as an end
 user, see the <link xlink:href="http://docs.openstack.org/user-guide/dashboard-manage-images.html">upload and manage images with Dashboard in
 OpenStack End User Guide</link>
-and <link xlink:href="http://docs.openstack.org/user-guide/common/cli-manage-images.html">manage images with CLI in OpenStack End User Guide</link> .</para>
+and <link xlink:href="http://docs.openstack.org/user-guide/common/cli-manage-images.html">manage images with CLI in OpenStack End User Guide</link>.</para>
       <para>To create and manage images as an administrator for other
 users, use the following procedures.</para>
       <sect2>
@@ -9644,7 +9644,7 @@ for example, are a known issue that affects root wrapper performance.</para>
 the <literal>[workaround]</literal> section of the <literal>nova.conf</literal> configuration file.</para>
           <para>The filters definition files contain lists of filters that rootwrap will
 use to allow or deny a specific command. They are generally suffixed by
-<literal>.filters</literal> . Since they are in the trusted security path, they need to
+<literal>.filters</literal>. Since they are in the trusted security path, they need to
 be owned and writable only by the root user. Their location is specified
 in the <literal>rootwrap.conf</literal> file.</para>
           <para>Filter definition files use an INI file format with a <literal>[Filters]</literal>
@@ -11914,7 +11914,7 @@ available with the specified <literal>vendor_id</literal> and <literal>product_i
             <screen language="console"><?dbsuse-fo font-size="8pt"?># openstack server create --flavor m1.large --image cirros-0.3.4-x86_64-uec --wait test-pci</screen>
           </sect4>
         </sect3>
-        <sect3>
+        <sect3 xml:id="sec.cpu.topo">
           <title>CPU topologies</title>
           <para>The NUMA topology and CPU pinning features in OpenStack provide high-level
 control over how instances run on hypervisor CPUs and the topology of virtual
@@ -12292,7 +12292,7 @@ libvirt/KVM driver.</para>
               <para>For performance reasons, configuring huge pages for an instance will
 implicitly result in a NUMA topology being configured for the instance.
 Configuring a NUMA topology for an instance requires enablement of
-<literal>NUMATopologyFilter</literal>. Refer to  for more
+<literal>NUMATopologyFilter</literal>. Refer to <xref linkend="sec.cpu.topo"/> for more
 information.</para>
             </important>
             <para>By default, an instance does not use huge pages for its underlying memory.
@@ -24363,7 +24363,7 @@ notification_topics = notifications</screen>
             <title>Logging and RPC</title>
             <para>These options configure the Networking server to send notifications
 through logging and RPC. The logging options are described in OpenStack
-Configuration Reference . RPC notifications go to <literal>notifications.info</literal>
+Configuration Reference. RPC notifications go to <literal>notifications.info</literal>
 queue bound to a topic exchange defined by <literal>control_exchange</literal> in
 <literal>neutron.conf</literal>.</para>
             <para>
@@ -35997,7 +35997,7 @@ which is consumed by <emphasis>only</emphasis> the trustee to obtain a
 such that the trustee has limited access to those
 roles delegated. In addition, the trustee has effective impersonation
 of the trustor user if it was selected when creating the trust.
-For more information, see .</para>
+For more information, see <xref linkend="cha.identity"/>.</para>
         <para>Trusts authorization involves the following steps:</para>
         <procedure>
           <step>
@@ -36171,7 +36171,7 @@ perspective) to the stack owners project. The users who are created
 in the stack domain are still assigned the <literal>heat_stack_user</literal> role, so
 the API surface they can access is limited through
 the <literal>policy.json</literal> file.
-For more  information, see .</para>
+For more  information, see <xref linkend="cha.identity"/>.</para>
           </step>
           <step>
             <para>When API requests are processed, the Orchestration service performs
@@ -36814,7 +36814,7 @@ Build Service repository:</para>
         <title>What's next</title>
         <para>Before you can run client commands, you must create and source the
 <literal>PROJECT-openrc.sh</literal> file to set environment variables. See
-.</para>
+ <xref linkend="sec.rcfile"/>.</para>
       </sect2>
     </sect1>
     <sect1>
@@ -36826,7 +36826,7 @@ run the following command:</para>
       <screen language="console">$ openstack --version
 openstack 3.2.0</screen>
     </sect1>
-    <sect1>
+    <sect1 xml:id="sec.rcfile">
       <title>Set environment variables using the OpenStack RC file</title>
       <para>To set the required environment variables for the OpenStack command-line
 clients, you must create an environment file called an OpenStack rc

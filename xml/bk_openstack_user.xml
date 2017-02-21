@@ -191,8 +191,7 @@ from the drop-down menu at the top left. If the cloud supports multi-domain
 model, you can also select the domain from this menu.</para>
         <figure>
           <title>Figure: Project tab</title>
-          <informalfigure>
-            <mediaobject>
+             <mediaobject>
               <imageobject role="fo">
                 <imagedata fileref="dashboard_project_tab.png" width="100%"/>
               </imageobject>
@@ -200,8 +199,7 @@ model, you can also select the domain from this menu.</para>
                 <imagedata fileref="dashboard_project_tab.png" width="100%"/>
               </imageobject>
             </mediaobject>
-          </informalfigure>
-        </figure>
+           </figure>
         <para>From the <guimenu>Project</guimenu> tab, you can access the following categories:</para>
         <sect3>
           <title><guimenu>Compute</guimenu> tab</title>
@@ -339,7 +337,6 @@ types for HOT templates.</para>
 manage instances, volumes, flavors, images, networks, and so on.</para>
         <figure>
           <title>Figure: Admin tab</title>
-          <informalfigure>
             <mediaobject>
               <imageobject role="fo">
                 <imagedata fileref="dashboard_admin_tab.png" width="100%"/>
@@ -348,8 +345,7 @@ manage instances, volumes, flavors, images, networks, and so on.</para>
                 <imagedata fileref="dashboard_admin_tab.png" width="100%"/>
               </imageobject>
             </mediaobject>
-          </informalfigure>
-        </figure>
+           </figure>
         <para>From the <guimenu>Admin</guimenu> tab, you can access the following category
 to complete these tasks:</para>
         <sect3>
@@ -474,7 +470,6 @@ services.</para>
         <title>OpenStack dashboard — <guimenu>Identity</guimenu> tab</title>
         <figure>
           <title>Figure:Identity tab</title>
-          <informalfigure>
             <mediaobject>
               <imageobject role="fo">
                 <imagedata fileref="dashboard_identity_tab.png" width="100%"/>
@@ -483,7 +478,6 @@ services.</para>
                 <imagedata fileref="dashboard_identity_tab.png" width="100%"/>
               </imageobject>
             </mediaobject>
-          </informalfigure>
         </figure>
         <itemizedlist>
           <listitem>
@@ -499,7 +493,6 @@ and delete projects.</para>
         <title>OpenStack dashboard — <guimenu>Settings</guimenu> tab</title>
         <figure>
           <title>Figure:Settings tab</title>
-          <informalfigure>
             <mediaobject>
               <imageobject role="fo">
                 <imagedata fileref="dashboard_settings_tab.png" width="100%"/>
@@ -508,7 +501,6 @@ and delete projects.</para>
                 <imagedata fileref="dashboard_settings_tab.png" width="100%"/>
               </imageobject>
             </mediaobject>
-          </informalfigure>
         </figure>
         <para>Click the <guimenu>Settings</guimenu> button from the user drop down menu at the
 top right of any page, you will see the <guimenu>Settings</guimenu> tab.</para>
@@ -559,7 +551,6 @@ click <guimenu>Images</guimenu> category.</para>
             <para>The <guimenu>Create An Image</guimenu> dialog box appears.</para>
             <figure>
               <title>Dashboard — Create Image</title>
-              <informalfigure>
                 <mediaobject>
                   <imageobject role="fo">
                     <imagedata fileref="create_image.png"/>
@@ -568,7 +559,6 @@ click <guimenu>Images</guimenu> category.</para>
                     <imagedata fileref="create_image.png"/>
                   </imageobject>
                 </mediaobject>
-              </informalfigure>
             </figure>
           </step>
           <step>

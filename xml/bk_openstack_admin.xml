@@ -7898,10 +7898,10 @@ network mode has its own set of changes regarding multinic usage:</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-manager.jpg" width="600"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-manager.jpg" width="99%"/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-manager.jpg" width="600"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-manager.jpg" width="99%"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -7909,10 +7909,10 @@ network mode has its own set of changes regarding multinic usage:</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-DHCP-manager.jpg" width="600"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-DHCP-manager.jpg" width="99%"/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-DHCP-manager.jpg" width="600"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-Flat-DHCP-manager.jpg" width="99%"/>
             </imageobject>
           </mediaobject>
         </figure>
@@ -7920,10 +7920,10 @@ network mode has its own set of changes regarding multinic usage:</para>
           <title/>
           <mediaobject>
             <imageobject role="fo">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-VLAN-manager.jpg" width="600"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-VLAN-manager.jpg" width="99%"/>
             </imageobject>
             <imageobject role="html">
-              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-VLAN-manager.jpg" width="600"/>
+              <imagedata fileref="SCH_5007_V00_NUAC-multi_nic_OpenStack-VLAN-manager.jpg" width="99%"/>
             </imageobject>
           </mediaobject>
         </figure>

@@ -193,10 +193,10 @@ model, you can also select the domain from this menu.</para>
           <title>Figure: Project tab</title>
              <mediaobject>
               <imageobject role="fo">
-                <imagedata fileref="dashboard_project_tab.png" width="100%"/>
+                <imagedata fileref="dashboard_project_tab.png" width="99%"/>
               </imageobject>
               <imageobject role="html">
-                <imagedata fileref="dashboard_project_tab.png" width="100%"/>
+                <imagedata fileref="dashboard_project_tab.png" width="99%"/>
               </imageobject>
             </mediaobject>
            </figure>
@@ -339,10 +339,10 @@ manage instances, volumes, flavors, images, networks, and so on.</para>
           <title>Figure: Admin tab</title>
             <mediaobject>
               <imageobject role="fo">
-                <imagedata fileref="dashboard_admin_tab.png" width="100%"/>
+                <imagedata fileref="dashboard_admin_tab.png" width="99%"/>
               </imageobject>
               <imageobject role="html">
-                <imagedata fileref="dashboard_admin_tab.png" width="100%"/>
+                <imagedata fileref="dashboard_admin_tab.png" width="99%"/>
               </imageobject>
             </mediaobject>
            </figure>
@@ -472,10 +472,10 @@ services.</para>
           <title>Figure:Identity tab</title>
             <mediaobject>
               <imageobject role="fo">
-                <imagedata fileref="dashboard_identity_tab.png" width="100%"/>
+                <imagedata fileref="dashboard_identity_tab.png" width="99%"/>
               </imageobject>
               <imageobject role="html">
-                <imagedata fileref="dashboard_identity_tab.png" width="100%"/>
+                <imagedata fileref="dashboard_identity_tab.png" width="99%"/>
               </imageobject>
             </mediaobject>
         </figure>
@@ -495,10 +495,10 @@ and delete projects.</para>
           <title>Figure:Settings tab</title>
             <mediaobject>
               <imageobject role="fo">
-                <imagedata fileref="dashboard_settings_tab.png" width="100%"/>
+                <imagedata fileref="dashboard_settings_tab.png" width="99%"/>
               </imageobject>
               <imageobject role="html">
-                <imagedata fileref="dashboard_settings_tab.png" width="100%"/>
+                <imagedata fileref="dashboard_settings_tab.png" width="99%"/>
               </imageobject>
             </mediaobject>
         </figure>

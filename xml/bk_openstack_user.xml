@@ -6490,7 +6490,7 @@ The shutdown behavior is configured by the
 <literal>nova.conf</literal> file. Its value stands for the overall
 period (in seconds) a guest operation system is allowed
 to complete the shutdown. The default timeout is 60 seconds.
-See <link xlink:href="https://docs.openstack.org/ocata/config-reference/compute/config-options.html">Description of Compute configuration options</link>
+See <link xlink:href="https://docs.openstack.org/newton/config-reference/compute/config-options.html">Description of Compute configuration options</link>
 for details.</para>
               <para>The timeout value can be overridden on a per image basis
 by means of <literal>os_shutdown_timeout</literal> that is an image metadata
@@ -6566,7 +6566,7 @@ instance is powered off. The shutdown behavior is configured by the
 <literal>nova.conf</literal> file. Its value stands for the overall
 period (in seconds) a guest operation system is allowed
 to complete the shutdown. The default timeout is 60 seconds.
-See <link xlink:href="https://docs.openstack.org/ocata/config-reference/compute/config-options.html">Description of Compute configuration options</link>
+See <link xlink:href="https://docs.openstack.org/newton/config-reference/compute/config-options.html">Description of Compute configuration options</link>
 for details.</para>
             <para>The timeout value can be overridden on a per image basis
 by means of <literal>os_shutdown_timeout</literal> that is an image metadata
@@ -6636,7 +6636,7 @@ The shutdown behavior is configured by the <literal>shutdown_timeout</literal>
 parameter that can be set in the <literal>nova.conf</literal> file.
 Its value stands for the overall period (in seconds)
 a guest operation system is allowed to complete the shutdown.
-The default timeout is 60 seconds. See <link xlink:href="https://docs.openstack.org/ocata/config-reference/compute/config-options.html">Description of
+The default timeout is 60 seconds. See <link xlink:href="https://docs.openstack.org/newton/config-reference/compute/config-options.html">Description of
 Compute configuration options</link>
 for details.</para>
           <para>The timeout value can be overridden on a per image basis
@@ -8993,8 +8993,8 @@ requests, set the header <literal>X-Web-Mode</literal> to <literal>TRUE</literal
 <literal>/etc/swift/proxy-server.conf</literal> file below any authentication
 middleware. You must also add a Static Web middleware configuration
 section.</para>
-        <para>See the Cloud Administrator Guide for an example of the <link xlink:href="https://docs.openstack.org/ocata/config-reference/object-storage/features.html#static-web-sites">static web configuration syntax</link>.</para>
-        <para>See the Cloud Administrator Guide for a complete example of the <link xlink:href="https://docs.openstack.org/ocata/config-reference/object-storage/proxy-server.html#sample-proxy-server-configuration-file">/etc/swift/proxy-server.conf file</link>
+        <para>See the Cloud Administrator Guide for an example of the <link xlink:href="https://docs.openstack.org/newton/config-reference/object-storage/features.html#static-web-sites">static web configuration syntax</link>.</para>
+        <para>See the Cloud Administrator Guide for a complete example of the <link xlink:href="https://docs.openstack.org/newton/config-reference/object-storage/proxy-server.html#sample-proxy-server-configuration-file">/etc/swift/proxy-server.conf file</link>
 (including static web).</para>
         <para>Your publicly readable containers are checked for two headers,
 <literal>X-Container-Meta-Web-Index</literal> and <literal>X-Container-Meta-Web-Error</literal>. The

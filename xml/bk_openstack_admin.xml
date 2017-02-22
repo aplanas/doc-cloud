@@ -2638,9 +2638,9 @@ pairs and certificates in order to create and validate PKI tokens.</para>
 between the two is PKIZ tokens are compressed to help mitigate the size issues
 of PKI. For more information on the certificate setup for PKI and PKIZ tokens,
 see the <xref linkend="cha.certificates.pki"/>.</para>
-          <note>
+          <!--<note>
             <para>PKI and PKIZ tokens are deprecated and not supported in Ocata.</para>
-          </note>
+          </note>-->
         </sect3>
       </sect2>
     </sect1>
@@ -24885,10 +24885,10 @@ description of the alarm state transition.</para>
 It is intended to replace <literal>ceilometer-agent-central</literal>,
 <literal>ceilometer-agent-compute</literal>, and <literal>ceilometer-agent-ipmi</literal>.</para>
                 </step>
-                <step>
+                <!--<step>
                   <para>The <literal>ceilometer-api</literal> and <literal>ceilometer-collector</literal> are no longer
 supported since the Ocata release.</para>
-                </step>
+                </step>-->
                 <step>
                   <para>The <literal>ceilometer-alarm-evaluator</literal> and <literal>ceilometer-alarm-notifier</literal>
 services are removed in Mitaka release.</para>
@@ -29039,9 +29039,9 @@ ID</para>
         </informaltable>
         <note>
           <procedure>
-            <step>
+           <!-- <step>
               <para>In the Ocata release, the <literal>instance</literal> meter is no longer supported..</para>
-            </step>
+            </step>-->
             <step>
               <para>The <literal>instance:&lt;type&gt;</literal> meter can be replaced by using extra parameters in
 both the samples and statistics queries. Sample queries look like:</para>

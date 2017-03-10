@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+       xml:id="sec.depl.ostack.sahara">
+
+    <title>Deploying &dataproc;</title>
+    <para>
+      &dataproc; provides users with simple means to provision data processing frameworks (such as Hadoop, Spark, and Storm) on OpenStack. This is accomplished by specifying configuration parameters such as the framework version, cluster topology, node hardware details, etc.
+    </para>
+    <variablelist>
+      <varlistentry>
+      <term>Logging: Verbose</term>
+      <listitem>
+        <para>
+          Set to <systemitem>true</systemitem> to increase the amount of information written to the log files.
+        </para>
+      </listitem>
+      </varlistentry>
+    </variablelist>
+
+      <figure>
+        <title>The &dataproc; Barclamp</title>
+        <mediaobject>
+          <imageobject role="fo">
+       <imagedata fileref="depl_barclamp_sahara.png" width="100%" format="png"/>
+      </imageobject>
+      <imageobject role="html">
+       <imagedata fileref="depl_barclamp_sahara.png" width="75%" format="png"/>
+      </imageobject>
+     </mediaobject>
+    </figure>
+
+<sect2 xml:id="sec.depl.ostack.sahara.ha">
+   <title>&haSetup; for &dataproc;</title>
+   <para>
+     Making &dataproc; highly available requires no special configuration. It is sufficient to deploy it on a cluster.
+   </para>
+  </sect2>
+  </sect1>

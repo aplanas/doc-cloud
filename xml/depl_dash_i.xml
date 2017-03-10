@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+       xml:id="sec.depl.ostack.dash">
+
+  <title>Deploying &o_dash; (&ostack; &dash;)</title>
+
+  <para>
+   The last component that needs to be deployed is &o_dash;, the
+   &ostack; &dash;. It provides a Web interface for users to start and
+   stop &vmguest;s and for administrators to manage users, groups, roles,
+   etc. &o_dash; should be installed on a &contrnode;. To make
+   &o_dash; highly available, deploy it on a cluster.
+  </para>
+
+  <para>
+   The following attributes can be configured:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term>Session Timeout</term>
+    <listitem>
+     <para>
+      Timeout (in minutes) after which a user is been logged out automatically.
+      The default value is set to four hours (240 minutes).
+     </para>
+
+     <note>
+      <title>Timeouts Larger than Four Hours</title>
+      <para>
+       Every &o_dash; session requires a valid &o_ident; token. These tokens
+       also have a lifetime of for hours (14400 seconds). Setting the &o_dash;
+       session timeout to a value larger than 240 will therefore have no
+       effect, and you will receive a warning when applying the &barcl;.
+      </para>
+      <para>
+       To successfully apply a timeout larger than four hours, you first need
+       to adjust the &o_ident; token expiration accordingly. To do so, open the
+       &o_ident; &barcl; in <guimenu>Raw</guimenu> mode and adjust the value of
+       the key <literal>token_expiration</literal>. Note that the value has to
+       be provided in <emphasis>seconds</emphasis>. When the change is
+       successfully applied, you can adjust the &o_dash; session timeout (in
+       <emphasis>minutes</emphasis>). Note that extending the &o_ident; token
+       expiration may cause scalability issues in large and very busy &cloud;
+       installations.
+      </para>
+     </note>
+
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>
+     <guimenu>
+      User Password Validation: Regular expression used for password
+      validation
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      Specify a regular expression with which to check the password. The
+      default expression (<literal>.{8,}</literal>) tests for a minimum length
+      of 8 characters. The string you enter is interpreted as a Python regular
+      expression (see
+      <link xlink:href="http://docs.python.org/2.7/library/re.html#module-re"/>
+      for a reference).
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>
+      User Password Validation: Text to display if the password does not pass
+      validation
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      Error message that will be displayed in case the password validation
+      fails.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>SSL Support: Protocol</term>
+    <listitem>
+     <para>
+      Choose whether to encrypt public communication
+      (<guimenu>HTTPS</guimenu>) or not (<guimenu>HTTP</guimenu>). If choosing
+      <guimenu>HTTPS</guimenu>, you have two choices. You can either
+      <guimenu>Generate (self-signed) certificates</guimenu> or provide the
+      locations for the certificate key pair files
+      and,&mdash;optionally&mdash; the certificate chain file. Using
+      self-signed certificates is for testing purposes only and should never
+      be used in production environments!
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_dash; &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_nova_dashboard.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_nova_dashboard.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.dash.ha">
+   <title>&haSetup; for &o_dash;</title>
+   <para>
+    Making &o_dash; highly available requires no special
+    configuration&mdash;it is sufficient to deploy it on a cluster.
+   </para>
+  </sect2>
+ </sect1>

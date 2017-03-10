@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+       xml:id="sec.depl.ostack.ceilometer">
+
+  <title>Deploying &o_meter; (Optional)</title>
+
+  <para>
+   <remark condition="clarity">
+    2013-10-04 - fs: Which software/billing solution can make use of the
+    ceilometer data?
+   </remark>
+   &o_meter; collects CPU and networking data from &cloud;. This data
+   can be used by a billing system to enable customer billing. Deploying
+   &o_meter; is optional.
+  </para>
+
+  <para>
+   For more information about &o_meter; refer to the &ostack;
+   documentation at
+   <link xlink:href="http://docs.openstack.org/developer/ceilometer/"/>.
+  </para>
+
+  <important>
+   <title>&o_meter; Restrictions</title>
+   <para>
+    As of &productname; &productnumber; data measuring is only
+    supported for &kvm;, &xen; and Windows &vmguest;s. Other hypervisors and
+    &cloud; features such as object or block storage will not be
+    measured.
+   </para>
+  </important>
+
+  <para>
+   The following attributes can be configured for &o_meter;:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term>
+     Interval used for CPU/disk/network/other meter updates (in seconds)
+    </term>
+    <listitem>
+     <para>
+      Specify an interval in seconds after which &o_meter; performs an
+      update of the specified meter.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Evaluation interval for threshold alarms (in seconds)</term>
+    <listitem>
+     <para>
+      Set the interval after which to check whether to raise an alarm
+      because a threshold has been exceeded. For performance reasons, do not
+      set a value lower than the default (60s).
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Use MongoDB instead of standard database
+    </term>
+    <listitem>
+     <para>
+      &o_meter; collects a large amount of data, which is written to a
+      database. In a production system it is recommended to use a separate
+      database for &o_meter; rather than the standard database that is
+      also used by the other &cloud; components. MongoDB is optimized to
+      write a lot of data. As of &productname; &productnumber;, MongoDB
+      is only included as a technology preview and not supported.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>How long are metering/event samples kept in the database (in days)
+    </term>
+    <listitem>
+     <para>
+      Specify how long to keep the data. -1 means that samples are kept in
+      the database forever.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Verbose Logging
+    </term>
+    <listitem>
+     <para>
+      Shows debugging output in the log files when set to
+      <guimenu>true</guimenu>.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_meter; &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_ceilometer.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_ceilometer.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <para>
+   The &o_meter; component consists of five different roles:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>ceilometer-server</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The &o_meter; API server role. This role needs to be deployed on a
+      &contrnode;. &o_meter; collects approximately 200 bytes of data
+      per hour and &vmguest;. Unless you have a very huge number of
+      &vmguest;s, there is no need to install it on a dedicated node.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>ceilometer-polling</guimenu></term>
+    <listitem>
+     <para>
+      The polling agent listens to the message bus to collect data. It needs
+      to be deployed on a &contrnode;. It can be deployed on the same
+      node as <guimenu>ceilometer-server</guimenu>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>ceilometer-agent</guimenu></term>
+    <listitem>
+     <para>
+      The compute agents collect data from the compute nodes. They need to be
+      deployed on all &kvm; and &xen; compute nodes in your cloud (other
+      hypervisors are currently not supported).
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>ceilometer-swift-proxy-middleware</guimenu></term>
+    <listitem>
+     <para>
+      An agent collecting data from the &swift; nodes. This role needs to
+      be deployed on the same node as swift-proxy.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_meter; &Barcl;: Node Deployment</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_ceilometer_deployment.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_ceilometer_deployment.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.ceilometer.ha">
+   <title>&haSetup; for &o_meter;</title>
+   <para>
+    Making &o_meter; highly available requires no special
+    configuration&mdash;it is sufficient to deploy the roles
+    <guimenu>ceilometer-server</guimenu> and
+    <guimenu>ceilometer-polling</guimenu> on a cluster. The cluster needs to
+    consist of an odd number of nodes, otherwise the &o_meter; deployment will
+    fail.
+   </para>
+  </sect2>
+ </sect1>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+       xml:id="sec.depl.ostack.trove">
+
+  <title>Deploying &o_dbaas; (Optional)</title>
+
+  <para>
+   &o_dbaas; is a Database-as-a-Service for &cloud;. It provides
+   database instances which can be used by all &vmguest;s. With
+   &o_dbaas; being deployed, &cloud; users no longer need to deploy
+   and maintain their own database applications. For more information about
+   &o_dbaas;; refer to the &ostack; documentation at
+   <link xlink:href="http://docs.openstack.org/developer/trove/"/>.
+  </para>
+
+  <important>
+   <title>Technology Preview</title>
+   <para>
+    &o_dbaas; is only included as a technology preview and not supported.
+   </para>
+  </important>
+
+  <para>
+   &o_dbaas; should be deployed on a dedicated &contrnode;.
+  </para>
+
+  <para>
+   The following attributes can be configured for &o_dbaas;:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Enable Trove Volume Support</guimenu>
+    </term>
+    <listitem>
+     <para>
+      When enabled, &o_dbaas; will use a &o_blockstore; volume to
+      store the data.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Logging: Verbose</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Increases the amount of information that is written to the log files
+      when set to <guimenu>true</guimenu>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Logging: Debug</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Shows debugging output in the log files when set to
+      <guimenu>true</guimenu>.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_dbaas; &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_trove.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_trove.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.trove.ha">
+   <title>&haSetup; for &o_dbaas;</title>
+   <para>
+    An &haSetup; for &o_dbaas; is currently not supported.
+   </para>
+  </sect2>
+ </sect1>

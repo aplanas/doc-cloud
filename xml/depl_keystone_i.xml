@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="sec.depl.ostack.keystone">
+
+  <title>Deploying &o_ident;</title>
+
+  <para>
+   <guimenu>Keystone</guimenu> is another core component that is used by all
+   other &ostack; components. It provides authentication and authorization
+   services. <guimenu>Keystone</guimenu> needs to be installed on a
+   &contrnode;. &o_ident; can be made highly available by deploying it
+   on a cluster. You can configure the following parameters of this
+   &barcl;:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Algorithm for Token Generation</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Set the algorithm used by &o_ident; to generate the tokens. You can
+      choose between <literal>Fernet</literal> (the default) or
+      <literal>UUID</literal>. Note that for performance and security reasons
+      it is strongly ecommended to use <literal>Fernet</literal>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Region Name</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Allows to customize the region name that crowbar is going to manage.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Default Credentials: Default Tenant</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Tenant for the users. Do not change the default value of
+      <literal>openstack</literal>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>
+     <guimenu>
+      Default Credentials: Administrator User Name/Password
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      User name and password for the administrator.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>
+     <guimenu>
+      Default Credentials: Create Regular User
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      Specify whether a regular user should be created automatically. Not recommended in most scenarios, especially in an LDAP environment.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>
+     <guimenu>
+      Default Credentials: Regular User Username/Password
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      User name and password for the regular user. Both the regular user and
+      the administrator accounts can be used to log in to the &cloud;
+      &dash;. However only the administrator can manage &o_ident; users and access.
+     </para>
+     <figure>
+      <title>The &o_ident; &Barcl;</title>
+      <mediaobject>
+       <imageobject role="fo">
+        <imagedata fileref="depl_barclamp_keystone.png" width="100%" format="png"/>
+       </imageobject>
+       <imageobject role="html">
+        <imagedata fileref="depl_barclamp_keystone.png" width="75%" format="png"/>
+       </imageobject>
+      </mediaobject>
+     </figure>
+    </listitem>
+   </varlistentry>
+   <varlistentry xml:id="sec.depl.ostack.keystone.ssl">
+    <term>SSL Support: Protocol
+    </term>
+    <listitem>
+     <para>
+      When sticking with the default value <guimenu>HTTP</guimenu>, public
+      communication will not be encrypted. Choose <guimenu>HTTPS</guimenu>
+      to use SSL for encryption. See <xref linkend="sec.depl.req.ssl"/> for
+      background information and
+      <xref linkend="sec.depl.inst.nodes.post.ssl"/> for installation
+      instructions. The following additional configuration options will
+      become available when choosing <guimenu>HTTPS</guimenu>:
+     </para>
+     <variablelist>
+      <varlistentry>
+       <term><guimenu>Generate (self-signed) certificates</guimenu>
+       </term>
+       <listitem>
+        <para>
+         When set to <literal>true</literal>, self-signed certificates are
+         automatically generated and copied to the correct locations. This
+         setting is for testing purposes only and should never be used in
+         production environments!
+        </para>
+       </listitem>
+      </varlistentry>
+      <varlistentry>
+       <term><guimenu>SSL Certificate File</guimenu> / <guimenu>SSL (Private) Key
+        File</guimenu>
+       </term>
+       <listitem>
+        <para>
+         Location of the certificate key pair files.
+        </para>
+       </listitem>
+      </varlistentry>
+      <varlistentry>
+       <term><guimenu>SSL Certificate is insecure</guimenu>
+       </term>
+       <listitem>
+        <para>
+         Set this option to <literal>true</literal> when using self-signed
+         certificates to disable certificate checks. This setting is for
+         testing purposes only and should never be used in production
+         environments!
+        </para>
+       </listitem>
+      </varlistentry>
+      <varlistentry>
+       <term><guimenu>SSL CA Certificates File</guimenu></term>
+       <listitem>
+        <para>
+         Specify the absolute path to the CA certificate. This field is
+	 mandatory, and leaving it blank will cause the &barcl; to fail. To fix
+	 this issue, you have to provide the absolute path to the CA
+	 certificate, restart the <systemitem>apache2</systemitem> service, and
+	 re-deploy the &barcl;.
+        </para>
+        <figure>
+         <title>The SSL Dialog</title>
+         <mediaobject>
+          <imageobject role="fo">
+           <imagedata fileref="depl_barclamp_ssl.png" width="100%" format="png"/>
+          </imageobject>
+          <imageobject role="html">
+           <imagedata fileref="depl_barclamp_ssl.png" width="75%" format="png"/>
+          </imageobject>
+         </mediaobject>
+        </figure>
+       </listitem>
+      </varlistentry>
+     </variablelist>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <sect2 xml:id="sec.depl.ostack.keystone.ldap">
+   <title>LDAP Authentication with &o_ident;</title>
+   <para>
+    <remark condition="clarity">
+     2015-01-21 - fs: TODO: bsc #914070
+    </remark>
+    By default &o_ident; uses an SQL database back-end store for
+    authentication. LDAP can be used in addition to the default or as an
+    alternative. Using LDAP requires the &contrnode; on which
+    &o_ident; is installed to be able to contact the LDAP server. See
+    <xref linkend="app.deploy.network_json"/> for instructions on how to
+    adjust the network setup.
+   </para>
+   <sect3 xml:id="sec.depl.ostack.keystone.ldap.ldap">
+    <title>Using LDAP for Authentication</title>
+    <para>
+     To configure LDAP as an alternative to the SQL database back-end store,
+     you need to open the &o_ident; &barcl; <guimenu>Attribute
+     </guimenu>configuration in <guimenu>Raw</guimenu> mode. Search for the
+     <guimenu>ldap</guimenu> section.
+    </para>
+    <figure xml:id="fig.keystone.ldap">
+     <title>The &o_ident; &Barcl;: Raw Mode</title>
+     <mediaobject>
+      <imageobject role="fo">
+       <imagedata fileref="depl_barclamp_keystone_raw.png" width="100%" format="png"/>
+      </imageobject>
+      <imageobject role="html">
+       <imagedata fileref="depl_barclamp_keystone_raw.png" width="75%" format="png"/>
+      </imageobject>
+     </mediaobject>
+    </figure>
+    <para>
+     Adjust the settings according to your LDAP setup. The default
+     configuration does not include all attributes that can be
+     set. You'll find a complete list of options is available in the file
+     <filename>/opt/dell/chef/data_bags/crowbar/bc-template-keystone.schema</filename>
+     on the &admserv; (search for <literal>ldap</literal>). There are
+     three types of attribute values: strings (for example, the value for
+     <literal>url</literal>:<literal>"ldap://localhost"</literal>), bool
+     (for example, the value for <literal>use_dumb_member</literal>:
+     <literal>false</literal>) and integer (for example, the value for
+     <literal>page_size</literal>: <literal>0</literal>). Attribute names
+     and string values always need to be quoted with double quotes; bool and
+     integer values must not be quoted.
+    </para>
+    <important>
+     <title>Using LDAP over SSL (ldaps) Is Recommended</title>
+     <para>
+      In a production environment, it is recommended to use LDAP over SSL
+      (ldaps), otherwise passwords will be transferred as plain text.
+     </para>
+    </important>
+   </sect3>
+   <sect3 xml:id="sec.depl.ostack.keystone.ldap.hybrid">
+    <title>Using Hybrid Authentication</title>
+    <para>
+     The Hybrid LDAP back-end allows to create a mixed LDAP/SQL setup. This
+     is especially useful when an existing LDAP server should be used to
+     authenticate cloud users. The system and service users (administrators
+     and operators) needed to set up and manage &cloud; will be managed
+     in the local SQL database. Assignments of users to projects and roles
+     will also be stored in the local database.
+    </para>
+    <para>
+     In this scenario the LDAP Server can be read-only for &cloud;
+     installation and no Schema modifications are required. Therefore
+     managing LDAP users from within &cloud; is not possible and needs to
+     be done using your established tools for LDAP user management. All user
+     that are create with the &o_ident; command line client or the
+     Horizon Web UI will be stored in the local SQL database.
+    </para>
+    <para>
+     To configure hybrid authentication, proceed as follows:
+    </para>
+    <procedure>
+     <step>
+      <para>
+       Open the &o_ident; &barcl; <guimenu>Attribute
+       </guimenu>configuration in <guimenu>Raw</guimenu> mode (see
+       <xref linkend="fig.keystone.ldap"/>).
+      </para>
+     </step>
+     <step>
+      <para>
+       Set the identity and assignment drivers to the hybrid back-end:
+      </para>
+<screen> "identity": {
+    "driver": "hybrid"
+  },
+  "assignment": {
+    "driver": "hybrid"
+  }</screen>
+     </step>
+     <step>
+      <para>
+       Adjust the settings according to your LDAP setup in the
+       <guimenu>ldap</guimenu> section. Since the LDAP back-end is only used
+       to acquire information on users (but not on projects and roles),
+       only the user-related settings matter here. See the following
+       example of settings that may need to be adjusted:
+      </para>
+<screen>  "ldap": {
+    "url": "ldap://localhost",
+    "user": "",
+    "password": "",
+    "suffix": "cn=example,cn=com",
+    "user_tree_dn": "cn=example,cn=com",
+    "query_scope": "one",
+    "user_id_attribute": "cn",
+    "user_enabled_emulation_dn": "",
+    "tls_req_cert": "demand",
+    "user_attribute_ignore": "tenant_id,tenants",
+    "user_objectclass": "inetOrgPerson",
+    "user_mail_attribute": "mail",
+    "user_filter": "",
+    "use_tls": false,
+    "user_allow_create": false,
+    "user_pass_attribute": "userPassword",
+    "user_enabled_attribute": "enabled",
+    "user_enabled_default": "True",
+    "page_size": 0,
+    "tls_cacertdir": "",
+    "tls_cacertfile": "",
+    "user_enabled_mask": 0,
+    "user_allow_update": true,
+    "group_allow_update": true,
+    "user_enabled_emulation": false,
+    "user_name_attribute": "cn"
+    "group_ad_nesting": false,
+    "use_pool": true,
+    "pool_size": 10,
+    "pool_retry_max": 3
+  }</screen>
+      <para>
+       To access the LDAP server anonymously, leave the values for
+       <guimenu>user</guimenu> and <guimenu>password</guimenu> empty.
+      </para>
+     </step>
+    </procedure>
+   </sect3>
+  </sect2>
+
+  <sect2 xml:id="sec.depl.ostack.keystone.ha">
+   <title>&haSetup; for &o_ident;</title>
+   <para>
+    Making &o_ident; highly available requires no special
+    configuration&mdash;it is sufficient to deploy it on a cluster.
+   </para>
+  </sect2>
+ </sect1>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="sec.depl.ostack.db">
+
+  <title>Deploying the Database</title>
+
+  <para>
+   The very first service that needs to be deployed is the
+   <guimenu>Database</guimenu>. The database component is using PostgreSQL and
+   is used by all other components. It must be installed on a &contrnode;.
+   The Database can be made highly available by deploying it on a cluster.
+  </para>
+
+  <remark condition="clarity">
+   2014-03-28 - fs: How to set up shared storage or DRBD for the data?
+  </remark>
+
+  <para>
+   The only attribute you may change is the maximum number of database
+   connections (<guimenu>Global Connection Limit </guimenu>). The default
+   value should usually work&mdash;only change it for large deployments
+   in case the log files show database connection failures.
+  </para>
+
+  <figure>
+   <title>The Database &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_database.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_database.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.db.ha">
+   <title>&haSetup; for the Database</title>
+   <para>
+    To make the database highly available, deploy it on a cluster instead
+    of a single &contrnode;. This also requires shared storage for the cluster
+    that hosts the database data. To achieve this, either set up a cluster with
+    DRBD support (see
+    <xref linkend="sec.depl.ostack.pacemaker"/>) or use
+    <quote>traditional</quote> shared storage like an NFS share. It is
+    recommended to use a dedicated cluster to deploy the database together
+    with RabbitMQ, since both components require shared storage.
+   </para>
+   <para>
+    Deploying the database on a cluster makes an additional <guimenu>High
+    Availability</guimenu> section available in the
+    <guimenu>Attributes</guimenu> section of the proposal. Configure the
+    <guimenu>Storage Mode</guimenu> in this section. There are two options:
+   </para>
+   <variablelist>
+    <varlistentry>
+     <term><guimenu>DRBD</guimenu>
+     </term>
+     <listitem>
+      <para>
+       This option requires a two-node cluster that has been set up with
+       DRBD. Also specify the <guimenu>Size to Allocate for DRBD Device (in
+       Gigabytes)</guimenu>. The suggested value of 50 GB should be
+       sufficient.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term>Shared Storage</term>
+     <listitem>
+      <para>
+       Use a shared block device or an NFS mount for shared storage.
+       Concordantly with the mount command, you need to specify three
+       attributes: <guimenu>Name of Block Device or NFS Mount
+       Specification</guimenu> (the mount point), the <guimenu>Filesystem
+       Type</guimenu> and the <guimenu>Mount Options</guimenu>. Refer to
+       <command>man 8 mount</command> for details on file system types and
+       mount options.
+      </para>
+     </listitem>
+    </varlistentry>
+   </variablelist>
+
+   <important>
+    <title>NFS Export Options for Shared Storage</title>
+    <para>
+     To use an NFS share as shared storage for a cluster, export
+     it on the NFS server with the following options:
+    </para>
+    <screen>rw,async,insecure,no_subtree_check,no_root_squash</screen>
+    <para>
+     In case mounting the NFS share on the cluster nodes fails, change the
+     export options and re-apply the proposal. However, before doing so, you
+     need to clean up the respective resources on the cluster nodes as
+     described in <link xmlns:xlink="http://www.w3.org/1999/xlink"
+      xlink:href="&suse-onlinedoc;/sle-ha-12/book_sleha/data/sec_ha_config_crm.html#sec_ha_manual_config_cleanup"/>.
+    </para>
+   </important>
+
+   <important>
+    <title>Ownership of a Shared NFS Directory</title>
+    <para>
+     The shared NFS directory that is used for the PostgreSQL database needs
+     to be owned by the same user ID and group ID as of the
+     <systemitem class="username">postgres</systemitem> user on the HA
+     database cluster.
+    </para>
+    <para>
+     To get the IDs, log in to one of the HA database cluster machines and
+     issue the following commands:
+    </para>
+<screen>id -g postgres
+getent group postgres | cut -d: -f3</screen>
+    <para>
+     The first command returns the numeric user ID, the second one the
+     numeric group ID. Now log in to the NFS server and change the ownership
+     of the shared NFS directory, for example:
+    </para>
+<screen>chown <replaceable>UID</replaceable>.<replaceable>GID</replaceable> /exports/cloud/db</screen>
+    <para>
+     Replace <replaceable>UID</replaceable> and
+     <replaceable>GID</replaceable> by the respective numeric values
+     retrieved above.
+    </para>
+   </important>
+   <warning>
+    <title>Re-Deploying &cloud; with Shared Storage</title>
+    <para>
+     When re-deploying &cloud; and reusing a shared storage hosting
+     database files from a previous installation, the installation may fail due
+     to the old database being used. Always delete the old databasethat is to be used
+     from the shared storage before re-deploying &cloud;.
+    </para>
+   </warning>
+  </sect2>
+</sect1>

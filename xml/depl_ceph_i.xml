@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="sec.depl.ostack.ceph">
+
+  <title>Deploying &ceph; (optional)</title>
+
+  <para>
+   &ceph; adds a redundant block storage service to &cloud;. It lets
+   you store persistent devices that can be mounted from &vmguest;s. It
+   offers high data security by storing the data redundantly on a pool of
+   &stornode;. Therefore &ceph; needs to be installed on at
+   least three dedicated nodes. All &ceph; nodes need to run &slsa;
+   12. For detailed information on
+   how to provide the required repositories, refer to
+   <xref linkend="sec.depl.adm_conf.repos.scc"/>.
+   If deploying the optional Calamari server for
+   &ceph; management and monitoring, an additional node is required.
+  </para>
+
+  <para>
+   For more information on the &ceph; project, visit
+   <link xlink:href="http://ceph.com/"/>.
+  </para>
+
+  <tip>
+   <title>&storage;</title>
+   <para>
+    &storage; is a robust cluster solution based on &ceph;. Refer to <link
+     xlink:href="https://www.suse.com/documentation/ses-4/"/> for more
+    information.
+   </para>
+  </tip>
+
+  <para>
+   The &ceph; &barcl; has the following configuration options:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Disk Selection Method</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Choose whether to only use the first available disk or all available
+      disks. <quote>Available disks</quote> are all disks currently not used
+      by the system. Note that one disk (usually
+      <filename>/dev/sda</filename>) of every block storage node is already
+      used for the operating system and is not available for &ceph;.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Number of Replicas of an Object</guimenu></term>
+    <listitem>
+     <para>
+      For data security, stored objects are not only stored once, but
+      redundantly. Specify the number of copies that should be stored for each
+      object with this setting. The number includes the object itself. If you
+      for example want the object plus two copies, specify 3.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>SSL Support for RadosGW</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Choose whether to encrypt public communication
+      (<guimenu>HTTPS</guimenu>) or not (<guimenu>HTTP</guimenu>). If
+      choosing <guimenu>HTTPS</guimenu>, you need to specify the locations for
+      the certificate key pair files. Note that both trusted and self-signed
+      certificates are accepted.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Calamari Credentials</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Calamari is a Web front-end for managing and analyzing the &ceph;
+      cluster. Provide administrator credentials (user name, password,
+      e-mail address) in this section. When &ceph; has bee deployed you
+      can log in to Calamari with these credentials. Deploying Calamari is
+      optional&mdash;leave these text boxes empty when not deploying
+      Calamari.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &ceph; &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_ceph.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_ceph.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <para>
+   The &ceph; component consists of the following different roles:
+  </para>
+  <important>
+   <title>Dedicated Nodes</title>
+   <para>
+    We do not recommend sharing one node by more &ceph; components at the same
+    time. For example, running a <literal>ceph-mon</literal> service on the same
+    node as <literal>ceph-osd</literal> degrades the performance of all services
+    hosted on the shared node. This also applies to other services, such as
+    Calamari or RADOS Gateway.
+   </para>
+  </important>
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>ceph-osd</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The virtual block storage service. Install this role on all dedicated
+      &ceph; &stornode;s (at least three).
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>ceph-mon</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Cluster monitor daemon for managing the storage map of the &ceph; cluster.
+      <guimenu>ceph-mon</guimenu> needs to be installed on at least three
+      nodes.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>ceph-calamari</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Sets up the Calamari Web interface which lets you manage the &ceph;
+      cluster. Deploying it is optional. The Web interface can be accessed via
+      http://<replaceable>IP-ADDRESS</replaceable>/ (where
+      <replaceable>IP-ADDRESS</replaceable> is the address of the machine
+      where <guimenu>ceph-calamari</guimenu> is deployed on).
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>ceph-radosgw</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The HTTP REST gateway for &ceph;. Visit <link
+       xlink:href="https://www.suse.com/documentation/ses-4/book_storage_admin/data/cha_ceph_gw.html"/>
+      for more detailed information.
+     </para>
+     <tip>
+      <title>&rgw; HA Setup</title>
+      <para>
+       If you need to set up more &rgw;s (and thus create a backup instance in
+       case one &rgw; node fails), set up &rgw; on multiple nodes and put
+       an HTTP load balancer in front of them. You can choose your preferred
+       balancing solution, or use &sle; HA extension (refer to <link
+        xlink:href="https://www.suse.com/documentation/sle-ha-12/"/>).
+      </para>
+     </tip>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>ceph-mds</guimenu></term>
+    <listitem>
+     <para>
+      The metadata server for the &ceph;FS distributed file system. Install this
+      role on one to three nodes to enable &ceph;FS. A file system named
+      <literal>cephfs</literal> will automatically be created, along with
+      <literal>cephfs_metadata</literal> and <literal>cephfs_data</literal> pools.
+      Refer to <link
+       xlink:href="https://www.suse.com/documentation/ses-3/book_storage_admin/data/cha_ceph_cephfs.html"/>
+      for more details.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <important>
+   <title>Use Dedicated Nodes</title>
+   <para>
+    Never deploy on a node that runs non-&ceph; &ostack; components. The
+    only services that may be deployed together on a &ceph; node, are
+    <guimenu>ceph-osd</guimenu>, <guimenu>ceph-mon</guimenu> and
+    <guimenu>ceph-radosgw</guimenu>. However, we recommend running each &ceph;
+    service on a dedicated host for performance reasons. All &ceph; nodes need to run
+    &slsa; 12.
+   </para>
+  </important>
+
+  <figure>
+   <title>The &ceph; &Barcl;: Node Deployment Example</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_ceph_node_deployment.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_ceph_node_deployment.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.ceph.ha">
+   <title>&haSetup; for &ceph;</title>
+   <para>
+    &ceph; is HA-enabled by design, so there is no need for a special
+    &hasetup;.
+   </para>
+  </sect2>
+ </sect1>

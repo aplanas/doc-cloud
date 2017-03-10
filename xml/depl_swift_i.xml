@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+       xml:id="sec.depl.ostack.swift">
+
+  <title>Deploying &o_objstore; (optional)</title>
+
+  <para>
+   &o_objstore; adds an object storage service to &cloud; that lets
+   you store single files such as images or snapshots. It offers high data
+   security by storing the data redundantly on a pool of
+   &stornode;s&mdash;therefore &o_objstore; needs to be installed
+   on at least two dedicated nodes.
+  </para>
+
+<!--
+  <para>
+   It is recommended not to change the defaults in the &barcl; proposal,
+   unless you know exactly what you require. However you should change the
+   <guimenu>Cluster Admin Password</guimenu>. If you plan to change the
+   <guimenu>Zone</guimenu> value, it is important to know that you need at
+   least as many &stornode;s as <guimenu>Zones</guimenu>.
+  </para>
+-->
+
+  <para>
+   To be able to properly configure &o_objstore; it is important to
+   understand how it places the data. Data is always stored redundantly
+   within the hierarchy. The &o_objstore; hierarchy in &cloud; is
+   formed out of zones, nodes, hard disks, and logical partitions. Zones are
+   physically separated clusters, for example different server rooms each
+   with its own power supply and network segment. A failure of one zone must
+   not affect another zone. The next level in the hierarchy are the
+   individual &o_objstore; storage nodes (on which
+   <guimenu>swift-storage</guimenu> has been deployed) followed by the hard
+   disks. Logical partitions come last.
+  </para>
+
+  <para>
+   &o_objstore; automatically places three copies of each object on the
+   highest hierarchy level possible. If three zones are available, the each
+   copy of the object will be placed in a different zone. In a one zone
+   setup with more than two nodes, the object copies will each be stored on
+   a different node. In a one zone setup with two nodes, the copies will be
+   distributed on different hard disks. If no other hierarchy element fits,
+   logical partitions are used.
+  </para>
+
+  <para>
+   The following attributes can be set to configure &o_objstore;:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Allow Public Containers</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Allows to enable public access to containers if set to
+      <literal>true</literal>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Enable Object Versioning</term>
+    <listitem>
+     <para>
+      If set to true, a copy of the current version is archived, each time
+      an object is updated.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Zones</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Number of zones (see above). If you do not have different independent
+      installations of storage nodes, set the number of zones to
+      <literal>1</literal>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Create 2^X Logical Partitions</term>
+    <listitem>
+     <para>
+      Partition power. The number entered here is used to compute the number
+      of logical partitions to be created in the cluster. The number you enter
+      is used as a power of 2 (2^X).
+     </para>
+     <para>
+      It is recommended to use a minimum of 100 partitions per disk. To
+      measure the partition power for your setup, do the following: Multiply
+      the number of disks from all &o_objstore; nodes with 100 and then
+      round up to the nearest power of two. Keep in mind that the first disk
+      of each node is not used by &o_objstore;, but rather for the
+      operating system.
+     </para>
+     <formalpara>
+      <title>Example: 10 &o_objstore; nodes with 5 hard disks each</title>
+      <para>
+       Four hard disks on each node are used for &o_objstore;, so there
+       is a total of forty disks. Multiplied by 100 gives 4000. The
+       nearest power of two, 4096, equals 2^12. So the partition power that
+       needs to be entered is <literal>12</literal>.
+      </para>
+     </formalpara>
+     <important>
+      <title>Value Cannot be Changed After the Proposal Has Been Deployed</title>
+      <para>
+       Changing the number of logical partition after &o_objstore; has
+       been deployed is not supported. Therefore the value for the partition
+       power should be calculated from the maximum number of partitions this
+       cloud installation is likely going to need at any point in time.
+      </para>
+     </important>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Minimum Hours before Partition is reassigned</term>
+    <listitem>
+     <para>
+      This option sets the number of hours before a logical partition is
+      considered for relocation. <literal>24</literal> is the recommended
+      value.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Replicas</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The number of copies generated for each object. Set this value to
+      <literal>3</literal>, the tested and recommended value.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Replication interval (in seconds)</term>
+    <listitem>
+     <para>
+      Time (in seconds) after which to start a new replication process.
+     </para>
+    </listitem>
+   </varlistentry>
+   <!-- fs 2016-01-26: No longer present in Cloud6
+   <varlistentry>
+    <term>Cluster Admin Password</term>
+    <listitem>
+     <para>
+      The &o_objstore; administrator password.
+     </para>
+    </listitem>
+   </varlistentry>
+   -->
+   <varlistentry>
+    <term>Debug</term>
+    <listitem>
+     <para>
+      Shows debugging output in the log files when set to
+      <literal>true</literal>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>SSL Support: Protocol</term>
+    <listitem>
+     <para>
+      Choose whether to encrypt public communication
+      (<guimenu>HTTPS</guimenu>) or not (<guimenu>HTTP</guimenu>). If choosing
+      <guimenu>HTTPS</guimenu>, you have two choices. You can either
+      <guimenu>Generate (self-signed) certificates</guimenu> or provide the
+      locations for the certificate key pair files. Using self-signed
+      certificates is for testing purposes only and should never be used in
+      production environments!
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_objstore; &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_swift.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_swift.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <para>
+   Apart from the general configuration described above, the &o_objstore;
+   &barcl; lets you also activate and configure <guimenu>Additional
+   Middlewares</guimenu>. The features these middleware provide can be used
+   via the &o_objstore; command line client only. The Ratelimit and S3
+   middleware certainly provide for the most interesting features, whereas
+   it is recommended to only enable further middleware for specific
+   use-cases.
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>S3 Middleware</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Provides an S3 compatible API on top of &o_objstore;.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>StaticWeb</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Enables to serve container data as a static Web site with an index
+      file and optional file listings. See
+      <link xlink:href="http://docs.openstack.org/developer/swift/middleware.html#staticweb"/>
+      for details.
+     </para>
+     <para>
+      This middleware requires to set <guimenu>Allow Public
+      Containers</guimenu> to <literal>true</literal>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>TempURL</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Enables to create URLs to provide time limited access to objects. See
+      <link xlink:href="http://docs.openstack.org/developer/swift/middleware.html#tempurl"/>
+      for details.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>FormPOST</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Enables to upload files to a container via Web form. See
+      <link xlink:href="http://docs.openstack.org/developer/swift/middleware.html#formpost"/>
+      for details.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Bulk</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Enables the possibility to extract tar files into a swift account and
+      to delete multiple objects or containers with a single request. See
+      <link xlink:href="http://docs.openstack.org/developer/swift/middleware.html#module-swift.common.middleware.bulk"/>
+      for details.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Cross-domain</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Allows to interact with the Swift API via Flash, Java and Silverlight
+      from an external network. See
+      <link xlink:href="http://docs.openstack.org/developer/swift/middleware.html#module-swift.common.middleware.crossdomain"/>
+      for details.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Domain Remap</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Translates container and account parts of a domain to path parameters
+      that the &o_objstore; proxy server understands. Can be used to
+      create short URLs that are easy to remember, for example by rewriting
+      <literal>home.&exampleuser_plain;.&exampledomain;/$ROOT/&exampleuser_plain;/home/myfile</literal>
+      to <literal>home.&exampleuser_plain;.&exampledomain;/myfile</literal>.
+      See
+      <link xlink:href="http://docs.openstack.org/developer/swift/middleware.html#module-swift.common.middleware.domain_remap"/>
+      for details.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Ratelimit</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Ratelimit enables you to throttle resources such as requests per
+      minute to provide denial of service protection. See
+      <link xlink:href="http://docs.openstack.org/developer/swift/middleware.html#module-swift.common.middleware.ratelimit"/>
+      for details.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <para>
+   The &o_objstore; component consists of four different roles. Deploying
+   <guimenu>swift-dispersion</guimenu> is optional:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term>swift-storage
+    </term>
+    <listitem>
+     <para>
+      The virtual object storage service. Install this role on all dedicated
+      &o_objstore; &stornode;s (at least two), but not on any other
+      node.
+     </para>
+     <warning>
+      <title>swift-storage Needs Dedicated Machines</title>
+      <para>
+       Never install the swift-storage service on a node that runs other
+       &ostack; components.
+      </para>
+     </warning>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>swift-ring-compute</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The ring maintains the information about the location of objects,
+      replicas, and devices. It can be compared to an index, that is used by
+      various &ostack; components to look up the physical location of
+      objects. <guimenu>swift-ring-compute</guimenu> must only be installed
+      on a single node; it is recommended to use a &contrnode;.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>swift-proxy</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The &o_objstore; proxy server takes care of routing requests to
+      &o_objstore;. Installing a single instance of
+      <guimenu>swift-proxy</guimenu> on a &contrnode; is recommended. The
+      <guimenu>swift-proxy</guimenu> role can be made highly available by
+      deploying it on a cluster.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>swift-dispersion</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Deploying <guimenu>swift-dispersion</guimenu> is optional. The
+      &o_objstore; dispersion tools can be used to test the health of the
+      cluster. It creates a heap of dummy objects (using 1% of the total
+      space available). The state of these objects can be queried using the
+      swift-dispersion-report query. <guimenu>swift-dispersion</guimenu>
+      needs to be installed on a &contrnode;.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_objstore; &Barcl;: Node Deployment Example</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_swift_node_deployment.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_swift_node_deployment.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.swift.ha">
+   <title>&haSetup; for &swift;</title>
+   <para>
+    &swift; replicates by design, so there is no need for a special
+    &hasetup;. Make sure to fulfill the requirements listed in
+    <xref linkend="sec.depl.reg.ha.storage.swift"/>.
+   </para>
+  </sect2>
+ </sect1>

@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+       xml:id="sec.depl.ostack.glance">
+
+  <title>Deploying &o_img;</title>
+
+  <para>
+   &o_img; provides discovery, registration, and delivery services for
+   virtual disk images. An image is needed to start an
+   &vmguest;&mdash;it is its pre-installed root-partition. All images
+   you want to use in your cloud to boot &vmguest;s from, are provided by
+   &o_img;. &o_img; must be deployed onto a &contrnode;. &o_img;
+   can be made highly available by deploying it on a cluster.
+  </para>
+
+  <para>
+   There are a lot of options to configure &o_img;. The most important
+   ones are explained below&mdash;for a complete reference refer to
+   <link xlink:href="http://github.com/crowbar/crowbar/wiki/Glance--barclamp"/>.
+  </para>
+
+  <important xml:id="note.glance.api.versions">
+   <title>&o_img; API Versions</title>
+   <para>
+    As of &productname; 7, the &o_img; API v1 is no longer enabled by default.
+    Instead, &o_img; API v2 is used by default.
+   </para>
+   <para>
+    If you need to re-enable API v1 for compatibility reasons:
+   </para>
+   <orderedlist>
+    <listitem>
+     <para>
+      Switch to the <guimenu>Raw</guimenu> view of the &o_img; &barcl;.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+      Search for the <literal>enable_v1</literal> entry and set it to
+      <literal>true</literal>:
+     </para>
+     <screen>"enable_v1": true</screen>
+     <para>
+      In new installations, this entry is set to <literal>false</literal> by default.
+      When upgrading from an older version of &productname; it is set to
+      <literal>true</literal>by default.</para>
+    </listitem>
+    <listitem>
+     <para>Apply your changes.</para>
+    </listitem>
+   </orderedlist>
+  </important>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Image Storage: Default Storage Store</guimenu></term>
+    <listitem>
+     <formalpara>
+      <title><guimenu>File</guimenu></title>
+      <para>
+       Images are stored in an image file on the &contrnode;.
+      </para>
+     </formalpara>
+     <formalpara>
+      <title><guimenu>Cinder</guimenu></title>
+      <para>
+       Use &o_objstore; for image storage. This option is included s a
+       technology preview and is not supported by &suse;.
+      </para>
+     </formalpara>
+     <formalpara>
+      <title><guimenu>Swift</guimenu></title>
+      <para>
+       Use &o_img; for image storage. If you have deployed &o_img;, using it
+       for image storage is recommended.
+      </para>
+     </formalpara>
+     <formalpara>
+      <title><guimenu>Ceph</guimenu></title>
+      <para>
+       Use &ceph; for image storage. If you have deployed &ceph;, using it
+       for image storage is recommended.
+      </para>
+     </formalpara>
+     <formalpara>
+      <title><guimenu>VMWare</guimenu></title>
+      <para>
+       If using VMware as a hypervisor, it is recommended to use
+       <guimenu>VMWare</guimenu> for storing images, too. This will make
+       starting VMware instances much faster.
+      </para>
+     </formalpara>
+     <formalpara>
+      <title><guimenu>Expose Backend Store Location</guimenu></title>
+      <para>
+       If set to <guimenu>true</guimenu>, the API will communicate the direct
+       URl of the image's back-end location to HTTP clients. Set to
+       <guimenu>false</guimenu> by default.
+      </para>
+     </formalpara>
+
+     <para>
+      Depending on the storage back-end, there are additional configuration
+      options available:
+     </para>
+
+     <bridgehead renderas="sect4"><guimenu>File Store Parameters</guimenu>
+     </bridgehead>
+     <para>
+      Only required if <guimenu>Default Storage Store</guimenu> is set to
+      <guimenu>File</guimenu>.
+     </para>
+     <variablelist>
+      <varlistentry>
+       <term><guimenu>Image Store Directory</guimenu>
+       </term>
+       <listitem>
+        <para>
+         Specify the directory to host the image file. The directory
+         specified here can also be an NFS share. See
+         <xref linkend="sec.depl.inst.nodes.post.nfs"/> for more
+         information.
+        </para>
+       </listitem>
+      </varlistentry>
+     </variablelist>
+
+     <bridgehead renderas="sect4"><guimenu>Swift Store Parameters</guimenu>
+     </bridgehead>
+     <para>
+      Only required if <guimenu>Default Storage Store</guimenu> is set to
+      <guimenu>Swift</guimenu>.
+     </para>
+     <variablelist>
+      <varlistentry>
+       <term><guimenu>Swift Container</guimenu>
+       </term>
+       <listitem>
+        <para>
+         Set the name of the container to use for the images in
+         &o_objstore;.
+        </para>
+       </listitem>
+      </varlistentry>
+     </variablelist>
+
+     <bridgehead renderas="sect4"><guimenu>RADOS Store Parameters</guimenu>
+     </bridgehead>
+     <para>
+      Only required if <guimenu>Default Storage Store</guimenu> is set to
+      <guimenu>Rados</guimenu>.
+     </para>
+     <variablelist>
+      <varlistentry>
+       <term>RADOS User for CephX Authentication</term>
+       <listitem>
+        <para>
+         If using a &cloud; internal &ceph; setup, the user you
+         specify here is created in case it does not exist. If using an
+         external &ceph; cluster, specify the user you have set up for
+         &o_img; (see <xref linkend="sec.depl.inst.nodes.post.ceph_ext"/>
+         for more information).
+        </para>
+       </listitem>
+      </varlistentry>
+      <varlistentry>
+       <term>RADOS Pool for Glance images</term>
+       <listitem>
+        <para>
+         If using a &cloud; internal &ceph; setup, the pool you
+         specify here is created in case it does not exist. If using an
+         external &ceph; cluster, specify the pool you have set up for
+         &o_img; (see <xref linkend="sec.depl.inst.nodes.post.ceph_ext"/>
+         for more information).
+        </para>
+       </listitem>
+      </varlistentry>
+     </variablelist>
+
+     <bridgehead renderas="sect4"><guimenu>VMWare Store Parameters</guimenu>
+     </bridgehead>
+     <para>
+      Only required if <guimenu>Default Storage Store</guimenu> is set to
+      <guimenu>VMWare</guimenu>.
+     </para>
+     <variablelist>
+      <varlistentry>
+       <term><guimenu>vCenter Host/IP Address</guimenu>
+       </term>
+       <listitem>
+        <para>
+         Name or IP address of the vCenter server.
+        </para>
+       </listitem>
+      </varlistentry>
+      <varlistentry>
+       <term><guimenu>vCenter Username</guimenu> / <guimenu>vCenter
+        Password</guimenu>
+       </term>
+       <listitem>
+        <para>
+         vCenter login credentials.
+        </para>
+       </listitem>
+      </varlistentry>
+      <varlistentry>
+       <term><guimenu>Datastores for Storing Images</guimenu>
+       </term>
+       <listitem>
+        <para>
+         A comma-separated list of datastores specified in the format:
+         <replaceable>DATACENTER_NAME</replaceable>:<replaceable>DATASTORE_NAME</replaceable>
+        </para>
+       </listitem>
+      </varlistentry>
+      <varlistentry>
+       <term>
+        <guimenu>
+         Path on the datastore, where the glance images will be
+         stored
+        </guimenu>
+       </term>
+       <listitem>
+        <para>
+         Specify an absolute path here.
+        </para>
+       </listitem>
+      </varlistentry>
+     </variablelist>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>SSL Support: Protocol</guimenu></term>
+    <listitem>
+     <para>
+      Choose whether to encrypt public communication
+      (<guimenu>HTTPS</guimenu>) or not (<guimenu>HTTP</guimenu>). If
+      choosing <guimenu>HTTPS</guimenu>, refer to
+      <xref linkend="sec.depl.ostack.keystone.ssl"/> for configuration
+      details.
+     </para>
+    </listitem>
+   </varlistentry>
+   <!-- fs 2016-01-26: No longer present in Cloud6
+   <varlistentry>
+    <term><guimenu>API: Bind to All Addresses</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Set this option to <guimenu>true</guimenu> to enable users to upload
+      images to &o_img;. If unset, only the operator can upload images.
+     </para>
+    </listitem>
+    </varlistentry>
+    -->
+   <varlistentry>
+    <term><guimenu>Caching</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Enable and configure image caching in this section. By default, image
+      caching is disabled. Learn more about &o_img;'s caching feature at
+      <link xlink:href="http://docs.openstack.org/developer/glance/cache.html"/>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <!-- fs 2016-01-26: No longer present in Cloud6
+   <varlistentry>
+    <term><guimenu>Database: SQL Idle Timeout</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Time after which idle database connections will be dropped.
+     </para>
+    </listitem>
+    </varlistentry>
+    -->
+   <varlistentry>
+    <term><guimenu>Logging: Verbose Logging</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Shows debugging output in the log files when set to
+      <guimenu>true</guimenu>.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_img; &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_glance.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_glance.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.glance.ha">
+   <title>&haSetup; for &o_img;</title>
+   <para>
+    &o_img; can be made highly available by deploying it on a cluster. It
+    is also strongly recommended to do so for the image data, too. The
+    recommended way to achieve this is to use &o_objstore; or an external
+    &ceph; cluster for the image repository. If using a directory on the
+    node instead (file storage back-end), you should set up shared storage
+    on the cluster for it.
+   </para>
+  </sect2>
+ </sect1>

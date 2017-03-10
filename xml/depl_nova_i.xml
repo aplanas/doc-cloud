@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+       xml:id="sec.depl.ostack.nova">
+
+  <title>Deploying &o_comp;</title>
+
+  <para>
+   &o_comp; provides key services for managing the &cloud;, sets up
+   the &compnode;s. &cloud; currently supports KVM, Xen and Microsoft
+   Hyper V and VMWare vSphere. The unsupported QEMU option is included to
+   enable test setups with virtualized nodes. The following attributes can
+   be configured for &o_comp;:
+   <remark condition="clarity">
+    2016-02-05 - fs: FIXME z/VM Configuration
+   </remark>
+
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>
+      Scheduler Options: Virtual RAM to Physical RAM allocation ratio
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      Set the <quote>overcommit ratio</quote> for RAM for &vmguest;s on
+      the &compnode;s. A ratio of <literal>1.0</literal> means no
+      overcommitment. Changing this value is not recommended.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>
+      Scheduler Options: Virtual CPU to Physical CPU allocation ratio
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      Set the <quote>overcommit ratio</quote> for CPUs for &vmguest;s on
+      the &compnode;s. A ratio of <literal>1.0</literal> means no
+      overcommitment.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>
+      Scheduler Options: Virtual Disk to Physical Disk allocation ratio
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      Set the <quote>overcommit ratio</quote> for virtual disks for &vmguest;s on
+      the &compnode;s. A ratio of <literal>1.0</literal> means no
+      overcommitment.<remark condition="accuracy">2017-01-02 - dpopov: DEVS FIXME Check whether this is correct.</remark>
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>
+      Scheduler Options: Reserved Memory for Nova Compute hosts (MB)
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+       Amount of reserved host memory that is not used for allocating VMs by Nova Compute.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Live Migration Support: Enable Libvirt Migration</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Allows to move &kvm; and &xen; &vmguest;s to a different
+      &compnode; running the same hypervisor (cross hypervisor migrations
+      are not supported). Useful when a &compnode; needs to be shut down
+      or rebooted for maintenance or when the load of the &compnode; is
+      very high. &Vmguest;s can be moved while running (Live Migration).
+     </para>
+     <warning>
+      <title>Libvirt Migration and Security</title>
+      <para>
+       Enabling the libvirt migration option will open a TCP port on the
+       &compnode;s that allows access to all &vmguest;s from all
+       machines in the admin network. Ensure that only authorized machines
+       have access to the admin network when enabling this option.
+      </para>
+     </warning>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Live Migration Support: Setup Shared Storage</term>
+    <listitem>
+     <para>
+      Sets up a directory <filename>/var/lib/nova/instances</filename> on the
+      &contrnode; on which <guimenu>nova-controller</guimenu> is
+      running. This directory is exported via NFS to all compute nodes and
+      will host a copy of the root disk of <emphasis>all</emphasis> &xen;
+      &vmguest;s. This setup is required for live migration of &xen;
+      &vmguest;s (but not for &kvm;) and is used to provide central
+      handling of instance data. Enabling this option is only recommended if
+      &xen; live migration is required&mdash;otherwise it should be disabled.
+     </para>
+     <warning>
+      <title>Do Not Set Up Shared Storage When &vmguest;s are Running</title>
+      <para>
+       Setting up shared storage in a &cloud; where &vmguest;s are
+       running will result in connection losses to all running
+       &vmguest;s. It is strongly recommended to set up shared storage
+       when deploying &cloud;. If it needs to be done at a later stage,
+       make sure to shut down all &vmguest;s prior to the change.
+      </para>
+     </warning>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>KVM Options: Enable Kernel Samepage Merging</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Kernel SamePage Merging (KSM) is a Linux Kernel feature which merges
+      identical memory pages from multiple running processes into one memory
+      region. Enabling it optimizes memory usage on the &compnode;s when
+      using the &kvm; hypervisor at the cost of slightly increasing CPU
+      usage.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><guimenu>z/VM Configuration: xCAT Host/IP Address</guimenu></term>
+     <listitem>
+       <para>
+         IP address of the xCAT management interface.
+         <remark condition="accuracy">2017-01-02 - dpopov: DEVS FIXME Please check whether this is accurate.</remark>
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><guimenu>z/VM Configuration: xCAT Username/Password</guimenu></term>
+     <listitem>
+       <para>
+         xCAT login credentials.
+         <remark condition="accuracy">2017-01-02 - dpopov: DEVS FIXME Please check whether this is accurate.</remark>
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><guimenu>z/VM Configuration: z/VM disk pool for ephemeral disks</guimenu></term>
+     <listitem>
+       <para>
+         Name of the disk pool for ephemeral disks.
+         <remark condition="clarity">2017-01-02 - dpopov: DEVS FIXME More info required.</remark>
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><guimenu>z/VM Configuration: z/VM disk pool type for ephemeral disks (ECKD or FBA)</guimenu></term>
+     <listitem>
+       <para>
+         Choose disk pool type for ephemeral disks.
+         <remark condition="clarity">2017-01-02 - dpopov: DEVS FIXME More info required.</remark>
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><guimenu>z/VM Configuration: z/VM Host Managed By xCAT MN</guimenu></term>
+     <listitem>
+       <para>
+         z/VM host managed by xCAT Management Node.
+         <remark condition="clarity">2017-01-02 - dpopov: DEVS FIXME More info required.</remark>
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><guimenu>z/VM Configuration: User profile for creating a z/VM userid</guimenu></term>
+     <listitem>
+       <para>
+         User profile to be used for creating a z/VM userid.
+         <remark condition="clarity">2017-01-02 - dpopov: DEVS FIXME More info required.</remark>
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><guimenu>z/VM Configuration: Default zFCP SCSI Disk Pool</guimenu></term>
+     <listitem>
+       <para>
+         Default zFCP SCSI disk pool.
+         <remark condition="clarity">2017-01-02 - dpopov: DEVS FIXME More info required.</remark>
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><guimenu>z/VM Configuration: The xCAT MN node name</guimenu></term>
+     <listitem>
+       <para>
+         Name of the xCAT Management Node.
+         <remark condition="accuracy">2017-01-02 - dpopov: DEVS FIXME Check whether this is accurate.</remark>
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term><guimenu>z/VM Configuration: The xCAT MN node public SSH key</guimenu></term>
+     <listitem>
+       <para>
+         Public SSH key of the xCAT Management Node.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>VMware vCenter Settings</term>
+    <listitem>
+     <para>
+      Setting up VMware support is described in a separate section. See
+      <xref linkend="app.deploy.vmware"/>.
+     </para>
+    </listitem>
+   </varlistentry>
+<!--
+   <varlistentry>
+    <term>z/VM Configuration</term>
+    <listitem>
+     <para>
+      FIXME
+     </para>
+    </listitem>
+   </varlistentry>
+-->
+   <varlistentry>
+    <term>SSL Support: Protocol</term>
+    <listitem>
+     <para>
+      Choose whether to encrypt public communication
+      (<guimenu>HTTPS</guimenu>) or not (<guimenu>HTTP</guimenu>). If
+      choosing <guimenu>HTTPS</guimenu>,refer to
+      <xref linkend="sec.depl.ostack.keystone.ssl"/> for configuration
+      details.
+     </para>
+    </listitem>
+   </varlistentry>
+    <varlistentry>
+    <term>VNC Settings: Keymap</term>
+    <listitem>
+     <para>
+      Change the default VNC keymap for instances. By default,
+      <literal>en-us</literal> is used. Enter the value in lowercase,
+      either as a two character code (such as <literal>de</literal> or
+      <literal>jp</literal>) or, as a five character code such
+      as <literal>de-ch</literal> or <literal>en-uk</literal>, if applicable.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>VNC Settings: NoVNC Protocol</term>
+    <listitem>
+     <para>
+      After having started an instance you can display its VNC console in
+      the &ostack; &dash; (&o_dash;) via the browser using the
+      noVNC implementation. By default this connection is not encrypted and
+      can potentially be eavesdropped.
+     </para>
+     <para>
+      Enable encrypted communication for noVNC by choosing
+      <guimenu>HTTPS</guimenu> and providing the locations for the certificate
+      key pair files.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Logging: Verbose Logging</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Shows debugging output in the log files when set to
+      <guimenu>true</guimenu>.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+  <note xml:id="note.custom.vendor">
+   <title>Custom Vendor Data for Instances</title>
+   <para>
+    You can pass custom vendor data to all VMs via &o_comp;'s metadata server.
+    For example, information about a custom SMT server can be used by the &suse;
+    guest images to automatically configure the repositories for the guest.
+   </para>
+   <orderedlist>
+    <listitem>
+     <para>
+      To pass custom vendor data, switch to the <guimenu>Raw</guimenu> view of the
+       &o_comp; &barcl;.
+     </para>
+    </listitem>
+    <listitem>
+     <para>
+     Search for the following section:
+     </para>
+     <screen>"metadata": {
+  "vendordata": {
+    "json": "{}"
+  }
+}</screen>
+    </listitem>
+    <listitem>
+     <para>
+      As value of the <literal>json</literal> entry, enter valid JSON data. For
+      example:</para>
+     <screen>"metadata": {
+  "vendordata": {
+    "json": "{\"<replaceable>CUSTOM_KEY</replaceable>\": \"<replaceable>CUSTOM_VALUE</replaceable>\"}"
+  }
+}</screen>
+     <para>The string needs to be escaped because the &barcl; file is in JSON
+      format, too.
+     </para>
+    </listitem>
+   </orderedlist>
+   <para>
+    Use the following command to access the custom vendor data from inside a VM:
+   </para>
+<screen>curl -s http://<replaceable>METADATA_SERVER</replaceable>/openstack/latest/vendor_data.json</screen>
+   <para>
+    The IP address of the metadata server is always the same from within a VM.
+    For more details, see <link
+    xlink:href="https://www.suse.com/communities/blog/vms-get-access-metadata-neutron/"/>.
+   </para>
+  </note>
+
+  <figure>
+   <title>The &o_comp; &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_nova.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_nova.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <para>
+   The &o_comp; component consists of eight different roles:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>nova-controller</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Distributing and scheduling the &vmguest;s is managed by the
+      <guimenu>nova-controller</guimenu>. It also provides networking
+      and messaging services. <guimenu>nova-controller</guimenu> needs
+      to be installed on a &contrnode;.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term>
+    <guimenu>nova-compute-kvm</guimenu> /
+    <guimenu>nova-compute-qemu</guimenu> /
+    <guimenu>nova-compute-vmware</guimenu> /
+    <guimenu>nova-compute-xen</guimenu> /
+    <guimenu>nova-compute-zvm</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Provides the hypervisors (&kvm;, QEMU, VMware vSphere,
+      &xen;, and z/VM) and tools needed to manage the &vmguest;s. Only one
+      hypervisor can be deployed on a single compute node. To use
+      different hypervisors in your cloud, deploy different hypervisors
+      to different &compnode;s. A <literal>nova-compute-*</literal>
+      role needs to be installed on every &compnode;. However, not all
+      hypervisors need to be deployed.
+     </para>
+     <para>
+      Each image that will be made available in &cloud; to start an
+      &vmguest; is bound to a hypervisor. Each hypervisor can be deployed
+      on multiple &compnode;s (except for the VMWare vSphere role, see
+      below). In a multi-hypervisor deployment you should make sure to
+      deploy the <literal>nova-compute-*</literal> roles in a way, that
+      enough compute power is available for each hypervisor.
+     </para>
+     <note>
+      <title>Re-assigning Hypervisors</title>
+      <para>
+       <remark condition="clarity">
+        2013-08-05 - fs: Is this true?
+       </remark>
+       Existing <literal>nova-compute-*</literal> nodes can be changed
+       in a production &cloud; without service interruption. You need to
+       <quote>evacuate</quote>
+<!-- (see TODO) -->
+       the node, re-assign a new <literal>nova-compute</literal> role
+       via the &o_comp; &barcl; and <guimenu>Apply</guimenu> the
+       change. <guimenu>nova-compute-vmware</guimenu> can only be
+       deployed on a single node.
+      </para>
+     </note>
+     <important>
+      <title>Deploying VMware vSphere (vmware)</title>
+      <para>
+       <remark condition="clarity">
+        2013-08-05 - fs: What network requirements/adjustments are needed ??
+       </remark>
+       VMware vSphere is not supported <quote>natively</quote> by
+       &cloud;&mdash;it rather delegates requests to an existing
+       vCenter. It requires preparations at the vCenter and post install
+       adjustments of the &compnode;. See
+       <xref linkend="app.deploy.vmware"/> for instructions.
+       <guimenu>nova-compute-vmware</guimenu> can only be deployed on
+       a single &compnode;.
+      </para>
+     </important>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_comp; &Barcl;: Node Deployment Example with Two KVM Nodes</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_nova_node_deployment.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_nova_node_deployment.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.nova.ha">
+   <title>&haSetup; for &o_comp;</title>
+   <para> Making <guimenu>nova-controller</guimenu> highly available requires no
+    special configuration&mdash;it is sufficient to deploy it on a cluster.
+   </para>
+   <para>To enable &ha; for &compnode;s, deploy the following roles to
+    one or more clusters with remote nodes:</para>
+   <itemizedlist>
+    <listitem>
+     <para>nova-compute-kvm</para>
+    </listitem>
+    <listitem>
+     <para>nova-compute-qemu</para>
+    </listitem>
+    <listitem>
+     <para>nova-compute-xen</para>
+    </listitem>
+   </itemizedlist>
+   <para>
+    The cluster to which you deploy the roles above can be completely
+    independent of the one to which the role
+     <literal>nova-controller</literal> is deployed.</para>
+   <tip>
+    <title>Shared Storage</title>
+    <para>
+     It is recommended to use shared storage for the
+     <filename>/var/lib/nova/instances</filename> directory,
+     to ensure that ephemeral disks will be preserved during recovery
+     of VMs from failed compute nodes. Without shared storage, any
+     ephemeral disks will be lost, and recovery will rebuild the VM
+     from its original image.
+    </para>
+    <para>
+     If an external NFS server is used, enable the following option in
+     the &o_comp; &barcl; proposal: <guimenu>Shared Storage for Nova
+     instances has been manually configured</guimenu>.
+    </para>
+   </tip>
+  </sect2>
+ </sect1>

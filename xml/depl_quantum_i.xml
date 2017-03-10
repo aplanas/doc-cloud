@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+       xml:id="sec.depl.ostack.quantum">
+
+  <title>Deploying &o_netw;</title>
+
+  <para>
+   &o_netw; provides network connectivity between interface devices
+   managed by other &ostack; components (most likely &o_comp;). The
+   service works by enabling users to create their own networks and then
+   attach interfaces to them.
+  </para>
+
+  <para>
+   &o_netw; must be deployed on a &contrnode;. You first need to
+   choose a core plug-in&mdash;<guimenu>ml2</guimenu> or
+   <guimenu>vmware</guimenu>. Depending on your choice, more configuration
+   options will become available.
+  </para>
+
+  <para>
+   The <guimenu>vmware</guimenu> option lets you use an existing VMWare NSX
+   installation. Using this plugin is not a prerequisite for the VMWare
+   vSphere hypervisor support. However, it is needed when wanting to have
+   security groups supported on VMWare compute nodes. For all other
+   scenarios, choose <guimenu>ml2</guimenu>.
+  </para>
+
+  <para>
+   The only global option that can be configured is <guimenu>SSL
+   Support</guimenu>. Choose whether to encrypt public communication
+   (<guimenu>HTTPS</guimenu>) or not (<guimenu>HTTP</guimenu>). If choosing
+   <guimenu>HTTPS</guimenu>, refer to
+   <xref linkend="sec.depl.ostack.keystone.ssl"/> for configuration details.
+  </para>
+
+  <bridgehead renderas="sect2"><guimenu>ml2</guimenu> (Modular Layer 2)
+  </bridgehead>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Modular Layer 2 Mechanism Drivers</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Select which mechanism driver(s) shall be enabled for the ml2
+      plugin. It is possible to select more than one driver by holding the
+      <keycap function="control"/> key while clicking. Choices are:
+     </para>
+     <formalpara>
+      <title><guimenu>openvswitch</guimenu></title>
+      <para>
+       Supports GRE, VLAN and VLANX networks (to be configured via the
+       <guimenu>Modular Layer 2 type drivers</guimenu> setting).
+      </para>
+     </formalpara>
+     <formalpara>
+      <title><guimenu>linuxbridge</guimenu></title>
+      <para>
+       Supports VLANs only. Requires to specify the <guimenu>Maximum Number
+       of VLANs</guimenu>.
+      </para>
+     </formalpara>
+     <formalpara>
+      <title><guimenu>cisco_nexus</guimenu></title>
+      <para>
+       Enables &o_netw; to dynamically adjust the VLAN settings of the ports
+       of an existing Cisco Nexus switch when instances are launched.  It also
+       requires <guimenu>openvswitch</guimenu> which will automatically be
+       selected. With <guimenu>Modular Layer 2 type drivers</guimenu>,
+       <guimenu>vlan</guimenu> must be added. This option also requires to
+       specify the <guimenu>Cisco Switch Credentials</guimenu>. See <xref
+       linkend="app.deploy.cisco"/> for details.
+      </para>
+     </formalpara>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Use Distributed Virtual Router Setup</guimenu></term>
+    <listitem>
+     <para>
+      With the default setup, all intra-&compnode; traffic flows through the
+      network &contrnode;. The same is true for all traffic from floating
+      IPs. In large deployments the network &contrnode; can therefore quickly
+      become a bottleneck. When this option is set to <guimenu>true</guimenu>,
+      network agents will be installed on all compute nodes. This will
+      de-centralize the network traffic, since &compnode;s will be able to
+      directly <quote>talk</quote> to each other. Distributed Virtual Routers
+      (DVR) require the <guimenu>openvswitch</guimenu> driver and will not
+      work with the <guimenu>linuxbridge</guimenu> driver. HyperV &compnode;s
+      will not be supported&mdash;network traffic for these nodes will be
+      routed via the &contrnode; on which <guimenu>neutron-network</guimenu>
+      is deployed. For details on DVR refer to <link
+      xlink:href="https://wiki.openstack.org/wiki/Neutron/DVR"/>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Modular Layer 2 Type Drivers</guimenu>
+    </term>
+    <listitem>
+     <para>
+      This option is only available when having chosen the
+      <guimenu>openvswitch</guimenu> or the <guimenu>cisco_nexus</guimenu>
+      mechanism drivers. Options are <guimenu>vlan</guimenu>,
+      <guimenu>gre</guimenu> and <guimenu>vxlan</guimenu>. It is possible to
+      select more than one driver by holding the <keycap function="control"/>
+      key while clicking.
+     </para>
+     <para>
+      When multiple type drivers are enabled, you need to select the
+      <guimenu>Default Type Driver for Provider Network</guimenu>, that will
+      be used for newly created provider networks. This also includes the
+      <literal>nova_fixed</literal> network, that will be created when
+      applying the &o_netw; proposal.  When manually creating provider
+      networks with the <command>neutron</command> command, the default can be
+      overwritten with the <option>--provider:network_type
+      <replaceable>type</replaceable></option> switch. You will also need to
+      set a <guimenu>Default Type Driver for Tenant Network</guimenu>. It is
+      not possible to change this default when manually creating tenant
+      networks with the <command>neutron</command> command. The non-default
+      type driver will only be used as a fallback.
+     </para>
+     <para>
+      Depending on your choice of the type driver, more configuration options
+      become available.
+     </para>
+     <formalpara>
+      <title><guimenu>gre</guimenu></title>
+      <para>
+       Having chosen <guimenu>gre</guimenu>, you also need to specify the
+       start and end of the tunnel ID range.
+      </para>
+     </formalpara>
+     <formalpara>
+      <title><guimenu>vlan</guimenu></title>
+      <para>
+       The option <guimenu>vlan</guimenu> requires you to specify the
+       <guimenu>Maximum number of VLANs</guimenu>.
+      </para>
+     </formalpara>
+     <formalpara>
+      <title><guimenu>vxlan</guimenu></title>
+      <para>
+       Having chosen <guimenu>vxlan</guimenu>, you also need to specify the
+       start and end of the VNI range.
+      </para>
+     </formalpara>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <important>
+   <title>Drivers for HyperV &compnode;s</title>
+   <para>
+    HyperV &compnode;s do not support <guimenu>gre</guimenu> and
+    <guimenu>vxlan</guimenu>. If your environment includes a heterogeneous mix
+    of &compnode;s including HyperV nodes, make sure to select
+    <guimenu>vlan</guimenu>. This can be done in addition to the other drivers.
+   </para>
+  </important>
+
+  <important>
+   <title>Drivers for the VMware &compnode;</title>
+   <para>
+    &o_netw; must not be deployed with the <literal>openvswitch with
+    gre</literal> plug-in. See <xref linkend="app.deploy.vmware"/>
+    for details.
+   </para>
+  </important>
+
+ <bridgehead renderas="sect2"><guimenu>z/VM Configuration</guimenu>
+  </bridgehead>
+
+  <variablelist>
+    <varlistentry>
+      <term>xCAT Host/IP Address</term>
+      <listitem>
+        <para>
+          Host name or IP address of the xCAT Management Node.<remark>
+            2016-12-29 - dpopov: DEVS FIXME Please check whether this is correct.</remark>
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>xCAT Username/Password</term>
+      <listitem>
+        <para>
+          xCAT login credentials.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>rdev list for physnet1 vswitch uplink (if available)</term>
+      <listitem>
+        <para>
+          List of rdev addresses that should be connected to this vswitch.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>xCAT IP Address on Management Network</term>
+      <listitem>
+        <para>
+          IP address of the xCAT management interface.
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Net Mask of Management Network</term>
+      <listitem>
+        <para>
+          Net mask of the xCAT management interface.<remark>
+            2016-12-29 - dpopov: DEVS FIXME Please check whether this is correct.</remark>
+        </para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+
+  <bridgehead renderas="sect2"><guimenu>vmware</guimenu>
+  </bridgehead>
+
+  <para>
+   This plug-in requires to configure access to the VMWare NSX service.
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>VMWare NSX User Name/Password</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Login credentials for the VMWare NSX server. The user needs to have
+      administrator permissions on the NSX server.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>VMWare NSX Controllers</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Enter the IP address and the port number
+      (<replaceable>IP-ADDRESS</replaceable>:<replaceable>PORT</replaceable>)
+      of the controller API endpoint. If the port number is omitted, port
+      443 will be used. You may also enter multiple API endpoints
+      (comma-separated), provided they all belong to the same controller
+      cluster. When multiple API endpoints are specified, the plugin will
+      load balance requests on the various API endpoints.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>UUID of the NSX Transport Zone/Gateway Service</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The UUIDs for the transport zone and the gateway service can be
+      obtained from the NSX server. They will be used when networks are
+      created.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_netw; &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_network.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_network.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <para>
+   The &o_netw; component consists of two different roles:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>neutron-server</guimenu>
+    </term>
+    <listitem>
+     <para>
+      <guimenu>neutron-server</guimenu> provides the scheduler and the API.
+      It needs to be installed on a &contrnode;.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>neutron-network</guimenu>
+    </term>
+    <listitem>
+     <para>
+      This service runs the various agents that manage the network traffic
+      of all the cloud instances. It acts as the DHCP and DNS server and as
+      a gateway for all cloud instances. It is recommend to deploy this role
+      on a dedicated node supplied with sufficient network capacity.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_netw; &barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_neutron_node_deployment.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_neutron_node_deployment.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.network.infoblox">
+   <title>Using Infoblox IPAM Plug-in</title>
+   <para> In the &o_netw; &barcl;, you can enable support for the
+    infoblox IPAM plug-in and configure it. For configuration, the
+    <literal>infoblox</literal> section contains the subsections
+    <literal>grids</literal> and <literal>grid_defaults</literal>.
+   </para>
+   <variablelist>
+    <varlistentry>
+     <term>grids</term>
+     <listitem>
+      <para>This subsection must contain at least one entry. For each entry, the
+       following parameters are required:</para>
+      <itemizedlist>
+       <listitem>
+        <para>admin_user_name</para>
+       </listitem>
+       <listitem>
+        <para>admin_password</para>
+       </listitem>
+       <listitem>
+        <para>grid_master_host</para>
+       </listitem>
+       <listitem>
+        <para>grid_master_name</para>
+       </listitem>
+       <listitem>
+        <para>data_center_name</para>
+       </listitem>
+      </itemizedlist>
+      <para>You can also add multiple entries to the <literal>grids</literal>
+       section. However, the upstream infoblox agent only supports a single grid
+       currently.
+      </para>
+     </listitem>
+    </varlistentry>
+    <varlistentry>
+     <term>grid_defaults</term>
+     <listitem>
+      <para>This subsection contains the default settings that are used for each
+       grid (unless you have configured specific settings within the
+       <literal>grids</literal> section).
+      </para>
+     </listitem>
+    </varlistentry>
+   </variablelist>
+   <para>For detailed information on all infoblox-related configuration settings,
+    see <link
+     xlink:href="https://github.com/openstack/networking-infoblox/blob/master/doc/source/installation.rst"/>.
+   </para>
+   <para>Currently, all configuration options for infoblox are only available in
+    the <literal>raw</literal> mode of the &o_netw; &barcl;. To enable support
+    for the infoblox IPAM plug-in and configure it, proceed as follows:</para>
+   <procedure>
+    <step>
+     <para>
+      <guimenu>Edit</guimenu> the &o_netw; &barcl; proposal or create a
+      new one. </para>
+    </step>
+    <step>
+     <para>
+      Click <guimenu>Raw</guimenu> and search for the following section:
+     </para>
+     <screen>"use_infoblox": false,</screen>
+    </step>
+    <step>
+     <para>
+      To enable support for the infoblox IPAM plug-in, change this entry
+      to:
+     </para>
+     <screen>"use_infoblox": true,</screen>
+    </step>
+    <step>
+     <para>
+      In the <literal>grids</literal> section, configure at least one grid
+      by replacing the example values for each parameter with real values.
+     </para>
+    </step>
+    <step>
+     <para>If you need specific settings for a grid, add some of the parameters
+      from the <literal>grid_defaults</literal> section to the respective grid entry
+      and adjust their values.</para>
+     <para>Otherwise &crow; applies the default setting to each grid when you
+      save the &barcl; proposal.</para>
+    </step>
+    <step>
+     <para>Save your changes and apply them.</para>
+    </step>
+   </procedure>
+  </sect2>
+
+  <sect2 xml:id="sec.depl.ostack.network.ha">
+   <title>&haSetup; for &o_netw;</title>
+   <para>
+    &o_netw; can be made highly available by deploying
+    <guimenu>neutron-server</guimenu> and <guimenu>neutron-network</guimenu> on a
+    cluster. While <guimenu>neutron-server</guimenu> may be deployed on a
+    cluster shared with other services, it is strongly recommended to use a
+    dedicated cluster solely for the <guimenu>neutron-network</guimenu> role.
+   </para>
+  </sect2>
+ </sect1>

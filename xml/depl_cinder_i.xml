@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sect1
+[
+  <!ENTITY % entities SYSTEM "entity-decl.ent">
+  %entities;
+]>
+<!-- Converted by suse-upgrade version 1.1 -->
+<sect1 xmlns="http://docbook.org/ns/docbook"
+       xmlns:xi="http://www.w3.org/2001/XInclude"
+       xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+       xml:id="sec.depl.ostack.cinder">
+
+  <title>Deploying &o_blockstore;</title>
+
+  <para>
+   &o_blockstore;, the successor of Nova Volume, provides volume block
+   storage. It adds persistent storage to an &vmguest; that will persist
+   until deleted (contrary to ephemeral volumes that will only persist while
+   the &vmguest; is running).
+  </para>
+
+  <para>
+   &o_blockstore; can provide volume storage by using different back-ends
+   such as local file, one or more local disks, &ceph; (RADOS), VMware or
+   network storage solutions from EMC, EqualLogic, Fujitsu or NetApp. Since
+   &productname; 5, &o_blockstore; supports using several back-ends
+   simultaneously. It is also possible to deploy the same network storage
+   back-end multiple times and therefore use different installations at the
+   same time.
+  </para>
+
+  <para>
+   The attributes that can be set to configure &o_blockstore; depend on
+   the back-end. The only general option is
+   <guimenu>SSL Support: Protocol</guimenu> (see
+   <xref linkend="sec.depl.ostack.keystone.ssl"/> for configuration
+   details).
+  </para>
+
+  <tip>
+   <title>Adding or Changing a Back-End</title>
+   <para>
+    When first opening the &o_blockstore; &barcl;, the default
+    proposal&mdash;<guimenu>Raw Devices</guimenu>&mdash; is already available
+    for configuration. To optionally add a back-end, go to the section
+    <guimenu>Add New Cinder Back-End</guimenu> and choose a <guimenu>Type Of
+    Volume</guimenu> from the drop-down box. Optionally, specify the
+    <guimenu>Name for the Backend</guimenu>. This is recommended when
+    deploying the same volume type more than once. Existing back-end
+    configurations (including the default one) can be deleted by clicking the
+    trashcan icon if no longer needed. Note that at least one back-end must be
+    configured.
+   </para>
+  </tip>
+
+  <bridgehead renderas="sect2"><guimenu>Raw devices</guimenu> (local disks)
+  </bridgehead>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Disk Selection Method</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Choose whether to only use the <guimenu>First Available</guimenu> disk
+      or <guimenu>All Available</guimenu> disks. <quote>Available
+      disks</quote> are all disks, currently not used by the system. Note
+      that one disk (usually <filename>/dev/sda</filename>) of every block
+      storage node is already used for the operating system and is not
+      available for &o_blockstore;.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Name of Volume</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Specify a name for the &o_blockstore; volume.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <bridgehead renderas="sect3"><guimenu>EMC</guimenu> (EMC² Storage)
+  </bridgehead>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>IP address of the ECOM server</guimenu> / <guimenu>Port of the ECOM server</guimenu>
+    </term>
+    <listitem>
+     <para>
+      IP address and Port of the ECOM server.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>User Name / Password for accessing the ECOM server</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Login credentials for the ECOM server.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>VMAX port groups to expose volumes managed by this backend</guimenu>
+    </term>
+    <listitem>
+     <para>
+      VMAX port groups that expose volumes managed by this back-end.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Serial number of the VMAX Array</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Unique VMAX array serial number.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Pool name within a given array</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Unique pool name within a given array.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>FAST Policy name to be used</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Name of the FAST Policy to be used. When specified, volumes managed by this back-end are managed as under FAST control.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <para>
+   For more information on the EMC driver refer to the &ostack;
+   documentation at
+   <link xlink:href="http://docs.openstack.org/liberty/config-reference/content/emc-vmax-driver.html"/>.
+  </para>
+
+  <bridgehead renderas="sect3"><guimenu>EqualLogic</guimenu>
+  </bridgehead>
+
+  <para>
+   EqualLogic drivers are included as a technology preview and are not
+   supported.
+  </para>
+
+  <bridgehead renderas="sect2"><guimenu>Fujitsu ETERNUS DX</guimenu>
+  </bridgehead>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Connection Protocol</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Select the protocol used to connect, either
+      <guimenu>FibreChannel</guimenu> or <guimenu>iSCSI</guimenu>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>IP / Port for SMI-S</term>
+    <listitem>
+     <para>
+      IP address and port of the ETERNUS SMI-S Server.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Username / Password for SMI-S</term>
+    <listitem>
+     <para>
+      Login credentials for the ETERNUS SMI-S Server.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>Snapshot (Thick/RAID Group) Pool Name</term>
+    <listitem>
+     <para>
+      Storage pool (RAID group) in which the volumes are created. Make sure
+      to have created that RAID group on the server in advance. If a RAID
+      group that does not exist is specified, the RAID group is created by
+      using unused disk drives. The RAID level is automatically determined
+      by the ETERNUS DX Disk storage system.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <bridgehead renderas="sect2"><guimenu>Hitachi HUSVM</guimenu>
+  </bridgehead>
+
+  <para>For information on configuring the Hitachi HUSVM back-end, refer to
+   <link xlink:href="http://docs.openstack.org/newton/config-reference/block-storage/drivers/hitachi-storage-volume-driver.html"/>.</para>
+
+  <bridgehead renderas="sect2"><guimenu>NetApp</guimenu>
+  </bridgehead>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Storage Family Type/Storage Protocol</guimenu>
+    </term>
+    <listitem>
+     <para>
+      &cloud; can either use <quote>Data ONTAP</quote> in
+      <guimenu>7-Mode</guimenu> or in <guimenu>Clustered Mode</guimenu>. In
+      <guimenu>7-Mode</guimenu> vFiler will be configured, in
+      <guimenu>Clustered Mode</guimenu> vServer will be configured. The
+      <guimenu>Storage Protocoll</guimenu> can either be set to
+      <guimenu>iSCSI</guimenu> or <guimenu>NFS</guimenu>. Choose the driver
+      and the protocol your NetApp is licensed for.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Server host name</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The management IP address for the 7-Mode storage controller or the
+      cluster management IP address for the clustered Data ONTAP.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Transport Type</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Transport protocol for communicating with the storage controller or
+      clustered Data ONTAP. Supported protocols are HTTP and HTTPS. Choose
+      the protocol your NetApp is licensed for.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Server port</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The port to use for communication. Port 80 is usually used for HTTP,
+      443 for HTTPS.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>User Name/Password for Accessing NetApp</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Login credentials.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>
+      The vFiler Unit Name for provisioning OpenStack volumes (netapp_vfiler)
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      The vFiler unit to be used for provisioning of &ostack; volumes.
+      This setting is only available in <guimenu>7-Mode</guimenu>.
+     </para>
+    </listitem>
+   </varlistentry>
+
+   <varlistentry>
+    <term><guimenu>Restrict provisioning on iSCSI to these volumes (netapp_volume_list)</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Provide a list of comma-separated volumes names to be used for
+      provisioning. This setting is only available when using iSCSI as
+      storage protocol.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+<bridgehead renderas="sect2"><guimenu>NFS</guimenu>
+  </bridgehead>
+
+  <variablelist>
+    <varlistentry>
+      <term>List of NFS Exports</term>
+      <listitem>
+        <para>
+          A list of accessible physical file systems on an NFS server.<remark>2016-12-29 - dpopov: DEVS FIXME Please check whether this is correct.</remark>
+        </para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>Mount Options</term>
+      <listitem>
+        <para>
+          Additional options for mounting NFS exports.<remark>2016-12-29 - dpopov: DEVS FIXME Please check whether this is correct.</remark>
+        </para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+
+  <bridgehead renderas="sect3"><guimenu>RADOS</guimenu> (&ceph;)
+  </bridgehead>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Use Ceph Deployed by Crowbar</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Select <guimenu>true</guimenu> if you have deployed &ceph; with
+      &cloud;. In case you are using an external &ceph; cluster (see
+      <xref linkend="sec.depl.inst.nodes.post.ceph_ext"/> for setup
+      instructions), select <guimenu>false</guimenu>.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>RADOS pool for Cinder volumes</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Name of the pool used to store the &o_blockstore; volumes.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>
+     <guimenu>
+      RADOS user (Set Only if Using CephX authentication)
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      &ceph; user name.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <bridgehead renderas="sect3"><guimenu>VMware Parameters</guimenu>
+  </bridgehead>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>vCenter Host/IP Address</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Host name or IP address of the vCenter server.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>vCenter Username</guimenu> / <guimenu>vCenter
+     Password</guimenu>
+    </term>
+    <listitem>
+     <para>
+      vCenter login credentials.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>vCenter Cluster Names for Volumes</guimenu></term>
+    <listitem>
+     <para>
+      Provide a comma-separated list of cluster names.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Folder for Volumes</guimenu></term>
+    <listitem>
+     <para>
+      Path to the directory used to store the &o_blockstore; volumes.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>
+     <guimenu>CA file for verifying the vCenter certificate</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Absolute path to the vCenter CA certificate.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term>
+     <guimenu>
+      vCenter SSL Certificate is insecure (for instance, self-signed)
+     </guimenu>
+    </term>
+    <listitem>
+     <para>
+      Default value: <literal>false</literal> (the CA truststore is used for verification).
+      Set this option to <literal>true</literal> when using self-signed certificates to disable
+      certificate checks. This setting is for testing purposes only and must not be used in
+      production environments!
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <bridgehead renderas="sect2"><guimenu>Local file</guimenu>
+  </bridgehead>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>Volume File Name</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Absolute path to the file to be used for block storage.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Maximum File Size (GB)</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Maximum size of the volume file. Make sure not to overcommit the size,
+      since it will result in data loss.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>Name of Volume</guimenu>
+    </term>
+    <listitem>
+     <para>
+      Specify a name for the &o_blockstore; volume.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <note>
+   <title>Using <guimenu>Local File</guimenu> for &blockstore;</title>
+   <para>
+    Using a file for block storage is not recommended for production
+    systems, because of performance and data security reasons.
+   </para>
+  </note>
+
+  <bridgehead renderas="sect3"><guimenu>Other driver</guimenu>
+  </bridgehead>
+
+  <para>
+   Lets you manually pick and configure a driver. Only use this option for
+   testing purposes, it is not supported.
+  </para>
+
+  <figure>
+   <title>The &o_blockstore; &Barcl;</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_cinder.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_cinder.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <para>
+   The &o_blockstore; component consists of two different roles:
+  </para>
+
+  <variablelist>
+   <varlistentry>
+    <term><guimenu>cinder-controller</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The &o_blockstore; controller provides the scheduler and the API.
+      Installing <guimenu>cinder-controller</guimenu> on a &contrnode; is
+      recommended.
+     </para>
+    </listitem>
+   </varlistentry>
+   <varlistentry>
+    <term><guimenu>cinder-volume</guimenu>
+    </term>
+    <listitem>
+     <para>
+      The virtual block storage service. It can be installed on a
+      &contrnode;. However, it is recommended to deploy it on one or more
+      dedicated nodes supplied with sufficient networking capacity to handle
+      the increased in  network traffic.
+     </para>
+    </listitem>
+   </varlistentry>
+  </variablelist>
+
+  <figure>
+   <title>The &o_blockstore; &Barcl;: Node Deployment Example</title>
+   <mediaobject>
+    <imageobject role="fo">
+     <imagedata fileref="depl_barclamp_cinder_node_deployment.png" width="100%" format="png"/>
+    </imageobject>
+    <imageobject role="html">
+     <imagedata fileref="depl_barclamp_cinder_node_deployment.png" width="75%" format="png"/>
+    </imageobject>
+   </mediaobject>
+  </figure>
+
+  <sect2 xml:id="sec.depl.ostack.cinder.ha">
+   <title>&haSetup; for &o_blockstore;</title>
+   <para>
+    While the <guimenu>cinder-controller</guimenu> role can be deployed on a
+    cluster, deploying <guimenu>cinder-volume</guimenu> on a cluster is not
+    supported. Therefore it is generally recommended to deploy
+    <guimenu>cinder-volume</guimenu> on several nodes&mdash;this ensures
+    the service continues to be available even when a node fails. In
+    addition with &ceph; or a network storage solution, such a setup
+    minimizes the potential downtime.
+   </para>
+   <para>
+    If using &ceph; or a network storage is not an option, you need to
+    set up a shared storage directory (for example, with NFS), mount it on
+    all cinder volume nodes and use the <guimenu>Local File</guimenu>
+    back-end with this shared directory. Using <guimenu>Raw
+    Devices</guimenu> is not an option, since local disks cannot be shared.
+   </para>
+  </sect2>
+ </sect1>
